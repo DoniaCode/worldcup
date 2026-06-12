@@ -1,0 +1,15 @@
+name: Test API Football Key
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test-api:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Test API connection
+        run: |
+          curl --request GET \
+            --url "https://v3.football.api-sports.io/status" \
+            --header "x-apisports-key: ${{ secrets.API_FOOTBALL_KEY }}"
