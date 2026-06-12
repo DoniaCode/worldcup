@@ -1,0 +1,16 @@
+name: Test OpenFootball World Cup Data
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test-openfootball:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Test OpenFootball data
+        run: |
+          echo "Testing OpenFootball World Cup JSON..."
+
+          curl -i -L \
+            "https://raw.githubusercontent.com/openfootball/worldcup.json/master/2026/worldcup.json"
