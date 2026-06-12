@@ -16,11 +16,12 @@
         FUTURE CUP<span>//</span>LEAGUE
       </div>
 
-      <div class="nav-links">
+     <div class="nav-links">
         <a href="#classifica">Classifica</a>
         <a href="#partite">Partite</a>
+        <a href="#minigiochi">Minigiochi</a>
         <a href="#regole">Regole</a>
-      </div>
+</div>
     </nav>
 
     <section class="hero-layout">
@@ -89,6 +90,67 @@
       </div>
     </section>
 
+<section id="minigiochi" class="card-section">
+  <div class="section-header">
+    <p class="small-title">Fun zone</p>
+    <h2>Minigiochi</h2>
+    <p>
+      Quiz rapido sulle bandiere mondiali. Inserisci il tuo nome, gioca e salva il tuo miglior punteggio nella classifica globale.
+    </p>
+  </div>
+
+  <div class="games-grid">
+    <article class="game-card">
+      <div class="game-label">Quiz bandiere</div>
+
+      <div id="flag-quiz" class="flag-quiz">
+        <label class="player-name-label" for="quiz-player-name">
+          Nome giocatore
+        </label>
+
+        <input
+          id="quiz-player-name"
+          class="player-name-input"
+          type="text"
+          maxlength="20"
+          placeholder="Es. Donia"
+        />
+
+        <div id="flag-emoji" class="flag-emoji">🏳️</div>
+
+        <h3>Che paese è?</h3>
+
+        <div id="flag-options" class="flag-options"></div>
+
+        <p id="quiz-feedback" class="quiz-feedback"></p>
+
+        <div class="quiz-footer">
+          <span id="quiz-score">Punteggio: 0</span>
+          <button id="next-flag-button" class="quiz-button">Prossima</button>
+        </div>
+
+        <button id="save-score-button" class="save-score-button">
+          Salva miglior punteggio
+        </button>
+
+        <p id="save-score-message" class="save-score-message"></p>
+      </div>
+    </article>
+
+    <article class="game-card scoreboard-card">
+      <div class="game-label">Scoreboard</div>
+
+      <div class="quiz-scoreboard">
+        <h3>Classifica quiz</h3>
+
+        <div id="flag-scoreboard-list" class="scoreboard-list">
+          <p class="scoreboard-empty">Caricamento classifica...</p>
+        </div>
+      </div>
+    </article>
+  </div>
+</section>
+
     <section id="partite" class="card-section">
       <div class="section-header">
         <p class="small-title">Match center</p>
@@ -156,7 +218,11 @@
     <p>Che vinca il migliore (cioè io) 🏆</p>
   </footer>
 
- <script src="scores.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
+
+<script src="firebase-config.js"></script>
+<script src="scores.js"></script>
 <script src="predictions.js"></script>
 <script src="script.js"></script>
 </body>
