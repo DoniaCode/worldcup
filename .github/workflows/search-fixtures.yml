@@ -1,0 +1,17 @@
+name: Search World Cup Fixtures
+
+on:
+  workflow_dispatch:
+
+jobs:
+  search-fixtures:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Search fixtures
+        run: |
+          echo "Searching fixtures from API-Football..."
+
+          curl --request GET \
+            --url "https://v3.football.api-sports.io/fixtures?season=2026" \
+            --header "x-apisports-key: ${{ secrets.API_FOOTBALL_KEY }}"
