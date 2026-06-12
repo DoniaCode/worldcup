@@ -203,27 +203,31 @@ function getRealScoreText(match) {
 function displayMatches() {
   const matchesContainer = document.getElementById("matches-container");
 
+  if (!matchesContainer) {
+    return;
+  }
+
   matchesContainer.innerHTML = "";
 
   const finishedMatches = scores.filter(match => match.finished);
   const upcomingMatches = scores.filter(match => !match.finished);
 
-  const sections = [
+  const matchSections = [
     {
       title: "Terminate",
-      subtitle: "Partite già concluse con punteggi calcolati",
+      subtitle: "Partite concluse con punti già calcolati",
       matches: finishedMatches
     },
     {
       title: "Da giocare",
-      subtitle: "Partite ancora in attesa del risultato ufficiale",
+      subtitle: "Partite ancora senza risultato ufficiale",
       matches: upcomingMatches
     }
   ];
 
-  sections.forEach(section => {
-    const sectionBlock = document.createElement("div");
-    sectionBlock.className = "matches-row-section";
+  matchSections.forEach(section => {
+    const sectionElement = document.createElement("div");
+    sectionElement.className = "matches-row-section";
 
     const cardsHTML = section.matches.map(match => {
       const matchPredictions = predictions.filter(prediction => {
@@ -285,7 +289,7 @@ function displayMatches() {
       `;
     }).join("");
 
-    sectionBlock.innerHTML = `
+    sectionElement.innerHTML = `
       <div class="matches-row-header">
         <div>
           <h3>${section.title}</h3>
@@ -304,10 +308,9 @@ function displayMatches() {
       </div>
     `;
 
-    matchesContainer.appendChild(sectionBlock);
+    matchesContainer.appendChild(sectionElement);
   });
 }
-
 async function initApp() {
   displayLeaderboard();
   displayMatches();
