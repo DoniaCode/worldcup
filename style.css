@@ -401,6 +401,8 @@ tbody tr:hover {
 }
 
 .teams {
+  position: relative;
+  z-index: 2;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -427,6 +429,86 @@ tbody tr:hover {
   font-size: 1.05rem;
   font-weight: 500;
   line-height: 1.6;
+}
+
+/* REAL SCORE + PREDICTIONS */
+
+.real-score {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 0;
+  margin-top: 10px;
+  margin-bottom: 4px;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.real-score span {
+  color: #e2e8f0;
+  font-weight: 600;
+}
+
+.real-score strong {
+  font-family: "Orbitron", sans-serif;
+  color: #facc15;
+}
+
+.predictions-list {
+  margin-top: 20px;
+  position: relative;
+  z-index: 2;
+}
+
+.predictions-list h4 {
+  font-family: "Orbitron", sans-serif;
+  color: #facc15;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  margin-bottom: 12px;
+}
+
+.prediction-row {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  gap: 12px;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.10);
+}
+
+.prediction-row:last-child {
+  border-bottom: none;
+}
+
+.prediction-player {
+  font-weight: 800;
+  color: #ffffff;
+}
+
+.prediction-score {
+  font-family: "Orbitron", sans-serif;
+  color: #ffffff;
+  font-size: 0.8rem;
+}
+
+.prediction-points {
+  font-family: "Orbitron", sans-serif;
+  color: #120508;
+  background: linear-gradient(135deg, #ffffff, #facc15, #22c55e);
+  padding: 5px 8px;
+  border-radius: 999px;
+  font-size: 0.65rem;
+  font-weight: 900;
+  white-space: nowrap;
+}
+
+.prediction-points.pending {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.12);
 }
 
 /* RULES */
@@ -723,6 +805,15 @@ footer {
     align-items: flex-start;
   }
 
+  .prediction-row {
+    grid-template-columns: 1fr auto;
+  }
+
+  .prediction-points {
+    grid-column: 1 / -1;
+    width: fit-content;
+  }
+
   footer {
     padding: 28px 18px;
     font-size: 0.95rem;
@@ -764,5 +855,15 @@ footer {
 
   .leaderboard-table td {
     font-size: 0.98rem;
+  }
+
+  .prediction-row {
+    grid-template-columns: 1fr;
+    gap: 6px;
+  }
+
+  .prediction-score,
+  .prediction-points {
+    width: fit-content;
   }
 }
