@@ -319,16 +319,27 @@ const countryNameFormatter = new Intl.DisplayNames(["it"], {
   type: "region"
 });
 
-const flagQuizCountries = worldFlagCodes.map(code => {
-  return {
-    name: countryNameFormatter.of(code),
-    flag: countryCodeToFlagEmoji(code)
-  };
-});
+const flagQuizCountries = [
+  ...worldFlagCodes.map(code => {
+    return {
+      name: countryNameFormatter.of(code),
+      flag: countryCodeToFlagEmoji(code)
+    };
+  }),
+  { name: "Inghilterra", flag: "🏴" },
+  { name: "Scozia", flag: "🏴" },
+  { name: "Galles", flag: "🏴" }
+];
+
+const FLAG_QUIZ_TOTAL_QUESTIONS = 10;
+
+let selectedQuizPlayer = "";
 let currentFlagQuestion = null;
 let flagQuizScore = 0;
 let hasAnsweredFlagQuestion = false;
 let flagQuizDb = null;
+let usedFlagNames = [];
+let currentQuestionNumber = 0;
 
 function initFirebaseScoreboard() {
   if (typeof firebase === "undefined" || typeof firebaseConfig === "undefined") {
@@ -367,8 +378,71 @@ function createSafePlayerId(name) {
     .replace(/^-+|-+$/g, "");
 }
 
+function updateQuizHeader() {
+  const playerDisplay = document.getElementById("quiz-player-display");
+  const progressText = document.getElementById("quiz-progress-text");
+  const quizScore = document.getElementById("quiz-score");
+
+  if (playerDisplay) {
+    playerDisplay.textContent = selectedQuizPlayer
+      ? `Giocatore: ${selectedQuizPlayer}`
+      : "Giocatore: nessuno";
+  }
+
+  if (progressText) {
+    progressText.textContent = `Domanda ${currentQuestionNumber}/${FLAG_QUIZ_TOTAL_QUESTIONS}`;
+  }
+
+  if (quizScore) {
+    quizScore.textContent = `Punteggio: ${flagQuizScore}`;
+  }
+}
+
+function setSelectedPlayer(playerName) {
+  selectedQuizPlayer = playerName;
+  localStorage.setItem("flagQuizSelectedPlayer", selectedQuizPlayer);
+
+  const playerButtons = document.querySelectorAll(".player-choice-button");
+
+  playerButtons.forEach(button => {
+    if (button.dataset.player === selectedQuizPlayer) {
+      button.classList.add("active");
+    } else {
+      button.classList.remove("active");
+    }
+  });
+
+  updateQuizHeader();
+}
+
+function resetFlagQuizGame() {
+  flagQuizScore = 0;
+  usedFlagNames = [];
+  currentQuestionNumber = 0;
+  hasAnsweredFlagQuestion = false;
+
+  const saveMessage = document.getElementById("save-score-message");
+
+  if (saveMessage) {
+    saveMessage.textContent = "";
+    saveMessage.className = "save-score-message";
+  }
+
+  displayFlagQuestion();
+}
+
 function createFlagQuestion() {
-  const correctCountry = getRandomItem(flagQuizCountries);
+  const availableCountries = flagQuizCountries.filter(country => {
+    return !usedFlagNames.includes(country.name);
+  });
+
+  if (availableCountries.length === 0) {
+    usedFlagNames = [];
+    return createFlagQuestion();
+  }
+
+  const correctCountry = getRandomItem(availableCountries);
+  usedFlagNames.push(correctCountry.name);
 
   const wrongCountries = shuffleArray(
     flagQuizCountries.filter(country => country.name !== correctCountry.name)
@@ -386,19 +460,46 @@ function displayFlagQuestion() {
   const flagEmoji = document.getElementById("flag-emoji");
   const flagOptions = document.getElementById("flag-options");
   const quizFeedback = document.getElementById("quiz-feedback");
-  const quizScore = document.getElementById("quiz-score");
+  const nextButton = document.getElementById("next-flag-button");
+  const saveButton = document.getElementById("save-score-button");
 
-  if (!flagEmoji || !flagOptions || !quizFeedback || !quizScore) {
+  if (!flagEmoji || !flagOptions || !quizFeedback) {
     return;
   }
 
+  if (currentQuestionNumber >= FLAG_QUIZ_TOTAL_QUESTIONS) {
+    flagEmoji.textContent = "🏆";
+    flagOptions.innerHTML = "";
+    quizFeedback.textContent = `Partita finita! Hai fatto ${flagQuizScore}/${FLAG_QUIZ_TOTAL_QUESTIONS}.`;
+    quizFeedback.className = "quiz-feedback good";
+
+    if (nextButton) {
+      nextButton.textContent = "Nuova partita";
+    }
+
+    if (saveButton) {
+      saveButton.disabled = false;
+    }
+
+    updateQuizHeader();
+    return;
+  }
+
+  currentQuestionNumber += 1;
   currentFlagQuestion = createFlagQuestion();
   hasAnsweredFlagQuestion = false;
 
   flagEmoji.textContent = currentFlagQuestion.correctCountry.flag;
   quizFeedback.textContent = "";
   quizFeedback.className = "quiz-feedback";
-  quizScore.textContent = `Punteggio: ${flagQuizScore}`;
+
+  if (nextButton) {
+    nextButton.textContent = "Prossima";
+  }
+
+  if (saveButton) {
+    saveButton.disabled = true;
+  }
 
   flagOptions.innerHTML = "";
 
@@ -413,6 +514,8 @@ function displayFlagQuestion() {
 
     flagOptions.appendChild(button);
   });
+
+  updateQuizHeader();
 }
 
 function checkFlagAnswer(button, selectedName) {
@@ -423,12 +526,13 @@ function checkFlagAnswer(button, selectedName) {
   hasAnsweredFlagQuestion = true;
 
   const quizFeedback = document.getElementById("quiz-feedback");
-  const quizScore = document.getElementById("quiz-score");
   const allButtons = document.querySelectorAll(".flag-option");
 
   const correctName = currentFlagQuestion.correctCountry.name;
 
   allButtons.forEach(optionButton => {
+    optionButton.disabled = true;
+
     if (optionButton.textContent === correctName) {
       optionButton.classList.add("correct");
     }
@@ -445,25 +549,30 @@ function checkFlagAnswer(button, selectedName) {
     quizFeedback.className = "quiz-feedback bad";
   }
 
-  quizScore.textContent = `Punteggio: ${flagQuizScore}`;
+  updateQuizHeader();
 }
 
 async function saveFlagQuizScore() {
-  const playerInput = document.getElementById("quiz-player-name");
   const saveButton = document.getElementById("save-score-button");
   const message = document.getElementById("save-score-message");
 
-  if (!playerInput || !saveButton || !message) {
+  if (!saveButton || !message) {
     return;
   }
 
-  const playerName = cleanPlayerName(playerInput.value);
+  const playerName = cleanPlayerName(selectedQuizPlayer);
   const playerId = createSafePlayerId(playerName);
 
   message.className = "save-score-message";
 
-  if (!playerName || playerName.length < 2 || !playerId) {
-    message.textContent = "Inserisci un nome valido.";
+  if (!playerName || !playerId) {
+    message.textContent = "Scegli prima Donia, Alessia o Hiba.";
+    message.classList.add("bad");
+    return;
+  }
+
+  if (currentQuestionNumber < FLAG_QUIZ_TOTAL_QUESTIONS) {
+    message.textContent = "Finisci prima le 10 domande.";
     message.classList.add("bad");
     return;
   }
@@ -485,7 +594,7 @@ async function saveFlagQuizScore() {
       const oldScore = oldDoc.data().score || 0;
 
       if (flagQuizScore <= oldScore) {
-        message.textContent = `Hai già un record di ${oldScore} punti.`;
+        message.textContent = `${playerName} ha già un record di ${oldScore} punti.`;
         message.classList.add("good");
         saveButton.disabled = false;
         return;
@@ -564,29 +673,45 @@ async function loadFlagQuizScoreboard() {
   }
 }
 
+function initPlayerButtons() {
+  const playerButtons = document.querySelectorAll(".player-choice-button");
+  const savedPlayer = localStorage.getItem("flagQuizSelectedPlayer");
+
+  playerButtons.forEach(button => {
+    button.addEventListener("click", () => {
+      setSelectedPlayer(button.dataset.player);
+    });
+  });
+
+  if (savedPlayer) {
+    setSelectedPlayer(savedPlayer);
+  } else {
+    updateQuizHeader();
+  }
+}
+
 function initFlagQuiz() {
   const nextButton = document.getElementById("next-flag-button");
   const saveButton = document.getElementById("save-score-button");
-  const playerInput = document.getElementById("quiz-player-name");
 
   if (!nextButton || !saveButton) {
     return;
   }
 
-  const savedName = localStorage.getItem("flagQuizPlayerName");
+  initPlayerButtons();
 
-  if (savedName && playerInput) {
-    playerInput.value = savedName;
-  }
+  nextButton.addEventListener("click", () => {
+    if (currentQuestionNumber >= FLAG_QUIZ_TOTAL_QUESTIONS) {
+      resetFlagQuizGame();
+      return;
+    }
 
-  if (playerInput) {
-    playerInput.addEventListener("input", () => {
-      localStorage.setItem("flagQuizPlayerName", cleanPlayerName(playerInput.value));
-    });
-  }
+    displayFlagQuestion();
+  });
 
-  nextButton.addEventListener("click", displayFlagQuestion);
   saveButton.addEventListener("click", saveFlagQuizScore);
+
+  saveButton.disabled = true;
 
   displayFlagQuestion();
   loadFlagQuizScoreboard();

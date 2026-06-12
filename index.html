@@ -104,17 +104,20 @@
       <div class="game-label">Quiz bandiere</div>
 
       <div id="flag-quiz" class="flag-quiz">
-        <label class="player-name-label" for="quiz-player-name">
-          Nome giocatore
-        </label>
+        <div class="player-selector">
+        <p class="player-name-label">Scegli giocatore</p>
 
-        <input
-          id="quiz-player-name"
-          class="player-name-input"
-          type="text"
-          maxlength="20"
-          placeholder="Es. Donia"
-        />
+        <div class="player-buttons">
+            <button class="player-choice-button" data-player="Donia">Donia</button>
+            <button class="player-choice-button" data-player="Alessia">Alessia</button>
+            <button class="player-choice-button" data-player="Hiba">Hiba</button>
+        </div>
+     </div>
+
+        <div class="quiz-progress">
+        <span id="quiz-player-display">Giocatore: nessuno</span>
+        <span id="quiz-progress-text">Domanda 0/10</span>
+        </div>
 
         <div id="flag-emoji" class="flag-emoji">🏳️</div>
 
