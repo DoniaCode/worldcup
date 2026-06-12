@@ -1,0 +1,16 @@
+name: Test World Cup 2026 Free API
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test-worldcup26:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Test World Cup 2026 API
+        run: |
+          echo "Testing free World Cup 2026 API..."
+
+          curl --request GET \
+            --url "https://worldcup26.ir/get/games"
