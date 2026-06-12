@@ -1,0 +1,42 @@
+name: Update World Cup Data
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 */6 * * *"
+
+permissions:
+  contents: write
+
+jobs:
+  update-data:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Download OpenFootball World Cup 2026 data
+        run: |
+          mkdir -p data
+          curl -L \
+            "https://raw.githubusercontent.com/openfootball/worldcup.json/master/2026/worldcup.json" \
+            -o data/worldcup.json
+
+      - name: Show downloaded file
+        run: |
+          head -n 40 data/worldcup.json
+
+      - name: Commit updated data
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+
+          git add data/worldcup.json
+
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "Aggiorna dati Mondiali 2026"
+            git push
+          fi
