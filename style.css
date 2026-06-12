@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;800;900&family=Rajdhani:wght@400;500;600;700&display=swap");
+
 * {
   margin: 0;
   padding: 0;
@@ -9,7 +11,7 @@ html {
 }
 
 body {
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: "Rajdhani", Arial, Helvetica, sans-serif;
   color: #ffffff;
   background:
     radial-gradient(circle at 15% 10%, rgba(239, 68, 68, 0.24), transparent 28%),
@@ -115,15 +117,17 @@ body {
 }
 
 .logo {
-  font-size: 1.05rem;
+  font-family: "Orbitron", sans-serif;
+  font-size: 1rem;
   font-weight: 900;
-  letter-spacing: 1.5px;
+  letter-spacing: 2px;
   color: #ffffff;
+  text-transform: uppercase;
 }
 
 .logo span {
   color: #facc15;
-  margin: 0 4px;
+  margin: 0 5px;
 }
 
 .nav-links {
@@ -132,10 +136,13 @@ body {
 }
 
 .nav-links a {
+  font-family: "Orbitron", sans-serif;
   color: #f8fafc;
   text-decoration: none;
-  font-size: 0.92rem;
-  font-weight: 800;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
   padding: 10px 15px;
   border-radius: 12px;
   transition: 0.25s;
@@ -165,18 +172,20 @@ body {
 
 .small-title {
   display: inline-block;
+  font-family: "Orbitron", sans-serif;
   color: #facc15;
-  font-size: 0.76rem;
-  font-weight: 900;
+  font-size: 0.68rem;
+  font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 3px;
   margin-bottom: 18px;
 }
 
 .hero-content h1 {
-  font-size: clamp(3rem, 6.8vw, 6.4rem);
-  line-height: 0.95;
-  letter-spacing: -4px;
+  font-family: "Orbitron", sans-serif;
+  font-size: clamp(2.7rem, 6.2vw, 5.8rem);
+  line-height: 1.02;
+  letter-spacing: -2px;
   text-transform: uppercase;
   margin-bottom: 30px;
   color: #ffffff;
@@ -189,8 +198,9 @@ body {
 .hero-description {
   max-width: 620px;
   color: #f8fafc;
-  font-size: 1.13rem;
-  line-height: 1.8;
+  font-size: 1.22rem;
+  font-weight: 500;
+  line-height: 1.65;
   margin-bottom: 38px;
   text-shadow: 0 2px 12px rgba(0, 0, 0, 0.65);
 }
@@ -205,11 +215,14 @@ body {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  font-family: "Orbitron", sans-serif;
   padding: 16px 24px;
   border-radius: 14px;
   text-decoration: none;
-  font-weight: 900;
-  letter-spacing: 0.5px;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
   transition: 0.25s;
 }
 
@@ -276,14 +289,18 @@ main {
 }
 
 .section-header h2 {
-  font-size: clamp(2rem, 4vw, 2.7rem);
-  letter-spacing: -1.5px;
+  font-family: "Orbitron", sans-serif;
+  font-size: clamp(1.8rem, 3.4vw, 2.5rem);
+  letter-spacing: -0.5px;
   margin-bottom: 8px;
   color: #ffffff;
+  text-transform: uppercase;
 }
 
 .section-header p:last-child {
   color: #e2e8f0;
+  font-size: 1.08rem;
+  font-weight: 500;
   line-height: 1.6;
 }
 
@@ -307,17 +324,20 @@ thead {
 }
 
 th {
+  font-family: "Orbitron", sans-serif;
   text-align: left;
   padding: 18px;
   color: #facc15;
   text-transform: uppercase;
-  letter-spacing: 1.7px;
-  font-size: 0.78rem;
+  letter-spacing: 1.5px;
+  font-size: 0.7rem;
 }
 
 td {
   padding: 18px;
   color: #ffffff;
+  font-size: 1.08rem;
+  font-weight: 600;
   border-bottom: 1px solid rgba(255, 255, 255, 0.12);
 }
 
@@ -368,12 +388,13 @@ tbody tr:hover {
 
 .match-status {
   display: inline-block;
+  font-family: "Orbitron", sans-serif;
   color: #120508;
   background: linear-gradient(135deg, #ffffff, #facc15, #22c55e);
-  font-size: 0.75rem;
+  font-size: 0.65rem;
   font-weight: 900;
   text-transform: uppercase;
-  letter-spacing: 1px;
+  letter-spacing: 1.2px;
   padding: 8px 12px;
   border-radius: 999px;
   margin-bottom: 20px;
@@ -388,17 +409,23 @@ tbody tr:hover {
 }
 
 .teams span {
+  font-family: "Orbitron", sans-serif;
+  font-size: 0.95rem;
   font-weight: 900;
   color: #ffffff;
+  text-transform: uppercase;
 }
 
 .teams strong {
+  font-family: "Orbitron", sans-serif;
   color: #facc15;
-  font-size: 0.85rem;
+  font-size: 0.78rem;
 }
 
 .match-card p {
   color: #e2e8f0;
+  font-size: 1.05rem;
+  font-weight: 500;
   line-height: 1.6;
 }
 
@@ -433,6 +460,7 @@ tbody tr:hover {
 
 .rule-points {
   display: inline-flex;
+  font-family: "Orbitron", sans-serif;
   color: #120508;
   background: linear-gradient(135deg, #ffffff, #facc15, #22c55e);
   font-weight: 900;
@@ -443,13 +471,18 @@ tbody tr:hover {
 }
 
 .rule-card h3 {
-  font-size: 1.25rem;
+  font-family: "Orbitron", sans-serif;
+  font-size: 1rem;
   margin-bottom: 12px;
   color: #ffffff;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .rule-card p {
   color: #e2e8f0;
+  font-size: 1.05rem;
+  font-weight: 500;
   line-height: 1.65;
 }
 
@@ -459,6 +492,8 @@ footer {
   text-align: center;
   padding: 36px 20px;
   color: #cbd5e1;
+  font-size: 1rem;
+  font-weight: 500;
 }
 
 /* TABLET */
@@ -540,22 +575,22 @@ footer {
   }
 
   .small-title {
-    font-size: 0.66rem;
+    font-size: 0.58rem;
     letter-spacing: 2px;
     margin-bottom: 12px;
   }
 
   .hero-content h1 {
-    font-size: clamp(2.45rem, 13vw, 4.2rem);
-    line-height: 0.98;
-    letter-spacing: -2px;
+    font-size: clamp(2.15rem, 10.5vw, 3.4rem);
+    line-height: 1.08;
+    letter-spacing: -1px;
     margin-bottom: 18px;
     max-width: 95%;
   }
 
   .hero-description {
-    font-size: 0.96rem;
-    line-height: 1.55;
+    font-size: 1rem;
+    line-height: 1.48;
     margin-bottom: 24px;
     max-width: 100%;
   }
@@ -567,7 +602,7 @@ footer {
 
   .hero-button {
     padding: 13px 16px;
-    font-size: 0.88rem;
+    font-size: 0.66rem;
     border-radius: 12px;
   }
 
@@ -582,11 +617,11 @@ footer {
   }
 
   .section-header h2 {
-    font-size: 1.8rem;
+    font-size: 1.55rem;
   }
 
   .section-header p:last-child {
-    font-size: 0.95rem;
+    font-size: 1rem;
   }
 
   /* CLASSIFICA MOBILE SENZA SCROLL */
@@ -638,7 +673,8 @@ footer {
     gap: 14px;
     padding: 10px 0;
     border-bottom: 1px solid rgba(255, 255, 255, 0.10);
-    font-size: 0.95rem;
+    font-size: 1.03rem;
+    font-weight: 700;
   }
 
   .leaderboard-table td:last-child {
@@ -652,8 +688,9 @@ footer {
 
   .leaderboard-table td::before {
     content: attr(data-label);
+    font-family: "Orbitron", sans-serif;
     color: #facc15;
-    font-size: 0.72rem;
+    font-size: 0.62rem;
     font-weight: 900;
     text-transform: uppercase;
     letter-spacing: 1.4px;
@@ -661,7 +698,7 @@ footer {
 
   .leaderboard-table td[data-label="Giocatore"] {
     font-weight: 900;
-    font-size: 1.05rem;
+    font-size: 1.12rem;
   }
 
   .leaderboard-table td[data-label="Punti"] {
@@ -688,7 +725,7 @@ footer {
 
   footer {
     padding: 28px 18px;
-    font-size: 0.9rem;
+    font-size: 0.95rem;
   }
 }
 
@@ -701,11 +738,11 @@ footer {
   }
 
   .hero-content h1 {
-    font-size: 2.35rem;
+    font-size: 2.1rem;
   }
 
   .hero-description {
-    font-size: 0.9rem;
+    font-size: 0.92rem;
   }
 
   .hero-actions {
@@ -726,6 +763,6 @@ footer {
   }
 
   .leaderboard-table td {
-    font-size: 0.9rem;
+    font-size: 0.98rem;
   }
 }
