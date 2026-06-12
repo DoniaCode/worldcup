@@ -205,68 +205,107 @@ function displayMatches() {
 
   matchesContainer.innerHTML = "";
 
-  for (const match of scores) {
-    const matchPredictions = predictions.filter(prediction => {
-      return prediction.matchId === match.id;
-    });
+  const finishedMatches = scores.filter(match => match.finished);
+  const upcomingMatches = scores.filter(match => !match.finished);
 
-    const matchCard = document.createElement("details");
-    matchCard.className = "match-card match-accordion";
+  const sections = [
+    {
+      title: "Terminate",
+      subtitle: "Partite già concluse con punteggi calcolati",
+      matches: finishedMatches
+    },
+    {
+      title: "Da giocare",
+      subtitle: "Partite ancora in attesa del risultato ufficiale",
+      matches: upcomingMatches
+    }
+  ];
 
-    const predictionsHTML = matchPredictions.map(prediction => {
-      let pointsText = "";
+  sections.forEach(section => {
+    const sectionBlock = document.createElement("div");
+    sectionBlock.className = "matches-row-section";
 
-      if (match.finished) {
-        const points = calculatePoints(
-          prediction.predHomeScore,
-          prediction.predAwayScore,
-          match.realHomeScore,
-          match.realAwayScore
-        );
+    const cardsHTML = section.matches.map(match => {
+      const matchPredictions = predictions.filter(prediction => {
+        return prediction.matchId === match.id;
+      });
 
-        pointsText = `<span class="prediction-points">${points} pt</span>`;
-      } else {
-        pointsText = `<span class="prediction-points pending">in attesa</span>`;
-      }
+      const predictionsHTML = matchPredictions.map(prediction => {
+        let pointsText = "";
+
+        if (match.finished) {
+          const points = calculatePoints(
+            prediction.predHomeScore,
+            prediction.predAwayScore,
+            match.realHomeScore,
+            match.realAwayScore
+          );
+
+          pointsText = `<span class="prediction-points">${points} pt</span>`;
+        } else {
+          pointsText = `<span class="prediction-points pending">in attesa</span>`;
+        }
+
+        return `
+          <div class="prediction-row">
+            <span class="prediction-player">${prediction.player}</span>
+            <span class="prediction-score">${prediction.predHomeScore} - ${prediction.predAwayScore}</span>
+            ${pointsText}
+          </div>
+        `;
+      }).join("");
 
       return `
-        <div class="prediction-row">
-          <span class="prediction-player">${prediction.player}</span>
-          <span class="prediction-score">${prediction.predHomeScore} - ${prediction.predAwayScore}</span>
-          ${pointsText}
-        </div>
+        <details class="match-card match-accordion horizontal-match-card">
+          <summary class="match-summary">
+            <div class="match-summary-top">
+              <span class="match-status">${getMatchStatusText(match)}</span>
+              <span class="open-details">Apri</span>
+            </div>
+
+            <div class="compact-teams">
+              <span>${match.homeTeam}</span>
+              <strong>${getRealScoreText(match)}</strong>
+              <span>${match.awayTeam}</span>
+            </div>
+          </summary>
+
+          <div class="match-details">
+            <div class="real-score">
+              <span>Risultato reale</span>
+              <strong>${match.finished ? `${match.realHomeScore} - ${match.realAwayScore}` : "-"}</strong>
+            </div>
+
+            <div class="predictions-list">
+              <h4>Pronostici</h4>
+              ${predictionsHTML}
+            </div>
+          </div>
+        </details>
       `;
     }).join("");
 
-    matchCard.innerHTML = `
-      <summary class="match-summary">
-        <div class="match-summary-top">
-          <span class="match-status">${getMatchStatusText(match)}</span>
-          <span class="open-details">Tocca</span>
+    sectionBlock.innerHTML = `
+      <div class="matches-row-header">
+        <div>
+          <h3>${section.title}</h3>
+          <p>${section.subtitle}</p>
         </div>
 
-        <div class="compact-teams">
-          <span>${match.homeTeam}</span>
-          <strong>${getRealScoreText(match)}</strong>
-          <span>${match.awayTeam}</span>
-        </div>
-      </summary>
+        <span>${section.matches.length}</span>
+      </div>
 
-      <div class="match-details">
-        <div class="real-score">
-          <span>Risultato reale</span>
-          <strong>${match.finished ? `${match.realHomeScore} - ${match.realAwayScore}` : "-"}</strong>
-        </div>
-
-        <div class="predictions-list">
-          <h4>Pronostici</h4>
-          ${predictionsHTML}
-        </div>
+      <div class="horizontal-matches-scroll">
+        ${
+          section.matches.length > 0
+            ? cardsHTML
+            : `<article class="empty-matches-card">Nessuna partita in questa sezione.</article>`
+        }
       </div>
     `;
 
-    matchesContainer.appendChild(matchCard);
-  }
+    matchesContainer.appendChild(sectionBlock);
+  });
 }
 
 async function initApp() {
@@ -336,10 +375,17 @@ const FLAG_QUIZ_TOTAL_QUESTIONS = 10;
 let selectedQuizPlayer = "";
 let currentFlagQuestion = null;
 let flagQuizScore = 0;
+let correctAnswers = 0;
+let currentStreak = 0;
+let maxStreak = 0;
 let hasAnsweredFlagQuestion = false;
 let flagQuizDb = null;
 let usedFlagNames = [];
 let currentQuestionNumber = 0;
+let questionStartTime = 0;
+let totalAnswerTime = 0;
+let answeredQuestions = 0;
+let quizTimerInterval = null;
 
 function initFirebaseScoreboard() {
   if (typeof firebase === "undefined" || typeof firebaseConfig === "undefined") {
@@ -378,10 +424,35 @@ function createSafePlayerId(name) {
     .replace(/^-+|-+$/g, "");
 }
 
+function getAverageTime() {
+  if (answeredQuestions === 0) {
+    return 0;
+  }
+
+  return Number((totalAnswerTime / answeredQuestions).toFixed(1));
+}
+
+function getSpeedBonus(answerTime) {
+  if (answerTime <= 3) {
+    return 5;
+  }
+
+  if (answerTime <= 6) {
+    return 3;
+  }
+
+  if (answerTime <= 10) {
+    return 1;
+  }
+
+  return 0;
+}
+
 function updateQuizHeader() {
   const playerDisplay = document.getElementById("quiz-player-display");
   const progressText = document.getElementById("quiz-progress-text");
   const quizScore = document.getElementById("quiz-score");
+  const streakText = document.getElementById("quiz-streak-text");
 
   if (playerDisplay) {
     playerDisplay.textContent = selectedQuizPlayer
@@ -395,6 +466,42 @@ function updateQuizHeader() {
 
   if (quizScore) {
     quizScore.textContent = `Punteggio: ${flagQuizScore}`;
+  }
+
+  if (streakText) {
+    streakText.textContent = `Streak: ${currentStreak}`;
+  }
+}
+
+function updateTimerText() {
+  const timerText = document.getElementById("quiz-timer-text");
+
+  if (!timerText || !questionStartTime || hasAnsweredFlagQuestion) {
+    return;
+  }
+
+  const elapsed = (Date.now() - questionStartTime) / 1000;
+  timerText.textContent = `Tempo: ${elapsed.toFixed(1)}s`;
+}
+
+function startQuestionTimer() {
+  stopQuestionTimer();
+
+  questionStartTime = Date.now();
+
+  const timerText = document.getElementById("quiz-timer-text");
+
+  if (timerText) {
+    timerText.textContent = "Tempo: 0.0s";
+  }
+
+  quizTimerInterval = setInterval(updateTimerText, 100);
+}
+
+function stopQuestionTimer() {
+  if (quizTimerInterval) {
+    clearInterval(quizTimerInterval);
+    quizTimerInterval = null;
   }
 }
 
@@ -417,8 +524,13 @@ function setSelectedPlayer(playerName) {
 
 function resetFlagQuizGame() {
   flagQuizScore = 0;
+  correctAnswers = 0;
+  currentStreak = 0;
+  maxStreak = 0;
   usedFlagNames = [];
   currentQuestionNumber = 0;
+  totalAnswerTime = 0;
+  answeredQuestions = 0;
   hasAnsweredFlagQuestion = false;
 
   const saveMessage = document.getElementById("save-score-message");
@@ -462,15 +574,18 @@ function displayFlagQuestion() {
   const quizFeedback = document.getElementById("quiz-feedback");
   const nextButton = document.getElementById("next-flag-button");
   const saveButton = document.getElementById("save-score-button");
+  const timerText = document.getElementById("quiz-timer-text");
 
   if (!flagEmoji || !flagOptions || !quizFeedback) {
     return;
   }
 
   if (currentQuestionNumber >= FLAG_QUIZ_TOTAL_QUESTIONS) {
+    stopQuestionTimer();
+
     flagEmoji.textContent = "🏆";
     flagOptions.innerHTML = "";
-    quizFeedback.textContent = `Partita finita! Hai fatto ${flagQuizScore}/${FLAG_QUIZ_TOTAL_QUESTIONS}.`;
+    quizFeedback.textContent = `Partita finita! ${correctAnswers}/${FLAG_QUIZ_TOTAL_QUESTIONS} corrette · ${flagQuizScore} punti · tempo medio ${getAverageTime()}s.`;
     quizFeedback.className = "quiz-feedback good";
 
     if (nextButton) {
@@ -479,6 +594,10 @@ function displayFlagQuestion() {
 
     if (saveButton) {
       saveButton.disabled = false;
+    }
+
+    if (timerText) {
+      timerText.textContent = `Media: ${getAverageTime()}s`;
     }
 
     updateQuizHeader();
@@ -516,6 +635,7 @@ function displayFlagQuestion() {
   });
 
   updateQuizHeader();
+  startQuestionTimer();
 }
 
 function checkFlagAnswer(button, selectedName) {
@@ -524,8 +644,14 @@ function checkFlagAnswer(button, selectedName) {
   }
 
   hasAnsweredFlagQuestion = true;
+  stopQuestionTimer();
+
+  const answerTime = Number(((Date.now() - questionStartTime) / 1000).toFixed(1));
+  totalAnswerTime += answerTime;
+  answeredQuestions += 1;
 
   const quizFeedback = document.getElementById("quiz-feedback");
+  const timerText = document.getElementById("quiz-timer-text");
   const allButtons = document.querySelectorAll(".flag-option");
 
   const correctName = currentFlagQuestion.correctCountry.name;
@@ -538,12 +664,46 @@ function checkFlagAnswer(button, selectedName) {
     }
   });
 
+  if (timerText) {
+    timerText.textContent = `Tempo: ${answerTime}s`;
+  }
+
   if (selectedName === correctName) {
-    flagQuizScore += 1;
+    const basePoints = 10;
+    const speedBonus = getSpeedBonus(answerTime);
+
+    currentStreak += 1;
+    correctAnswers += 1;
+
+    if (currentStreak > maxStreak) {
+      maxStreak = currentStreak;
+    }
+
+    let streakBonus = 0;
+
+    if (currentStreak % 3 === 0) {
+      streakBonus = 5;
+    }
+
+    const pointsWon = basePoints + speedBonus + streakBonus;
+    flagQuizScore += pointsWon;
+
     button.classList.add("correct");
-    quizFeedback.textContent = "Esatto! +1 punto";
+
+    let feedbackText = `Esatto! +${pointsWon} punti`;
+
+    if (speedBonus > 0) {
+      feedbackText += ` · velocità +${speedBonus}`;
+    }
+
+    if (streakBonus > 0) {
+      feedbackText += ` · streak +${streakBonus}`;
+    }
+
+    quizFeedback.textContent = feedbackText;
     quizFeedback.className = "quiz-feedback good";
   } else {
+    currentStreak = 0;
     button.classList.add("wrong");
     quizFeedback.textContent = `Sbagliato! Era ${correctName}`;
     quizFeedback.className = "quiz-feedback bad";
@@ -604,6 +764,10 @@ async function saveFlagQuizScore() {
     await scoreRef.set({
       player: playerName,
       score: flagQuizScore,
+      correct: correctAnswers,
+      totalQuestions: FLAG_QUIZ_TOTAL_QUESTIONS,
+      averageTime: getAverageTime(),
+      maxStreak: maxStreak,
       game: "flag-quiz",
       updatedAt: firebase.firestore.FieldValue.serverTimestamp()
     });
@@ -660,8 +824,15 @@ async function loadFlagQuizScoreboard() {
 
       row.innerHTML = `
         <span class="scoreboard-position">#${position}</span>
-        <span class="scoreboard-name">${data.player}</span>
-        <span class="scoreboard-score">${data.score}</span>
+
+        <span class="scoreboard-player-info">
+          <span class="scoreboard-name">${data.player}</span>
+          <span class="scoreboard-details">
+            ${data.correct || 0}/${data.totalQuestions || 10} · media ${data.averageTime || 0}s · streak ${data.maxStreak || 0}
+          </span>
+        </span>
+
+        <span class="scoreboard-score">${data.score} pt</span>
       `;
 
       list.appendChild(row);

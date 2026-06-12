@@ -1333,3 +1333,242 @@ footer {
     grid-template-columns: 1fr auto;
   }
 }
+/* PARTITE DIVISE IN TERMINATE / DA GIOCARE - MOBILE FIRST */
+
+#matches-container {
+  display: grid;
+  gap: 28px;
+}
+
+.matches-row-section {
+  width: 100%;
+}
+
+.matches-row-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 14px;
+  margin-bottom: 14px;
+}
+
+.matches-row-header h3 {
+  font-family: "Orbitron", sans-serif;
+  color: #ffffff;
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 4px;
+}
+
+.matches-row-header p {
+  color: #cbd5e1;
+  font-size: 0.95rem;
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+.matches-row-header span {
+  flex-shrink: 0;
+  font-family: "Orbitron", sans-serif;
+  color: #120508;
+  background: linear-gradient(135deg, #ffffff, #facc15, #22c55e);
+  padding: 8px 11px;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 900;
+}
+
+.horizontal-matches-scroll {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(280px, 84%);
+  gap: 14px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 2px 2px 16px;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: thin;
+  -webkit-overflow-scrolling: touch;
+}
+
+.horizontal-matches-scroll::-webkit-scrollbar {
+  height: 7px;
+}
+
+.horizontal-matches-scroll::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 999px;
+}
+
+.horizontal-matches-scroll::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, #ef4444, #facc15, #22c55e);
+  border-radius: 999px;
+}
+
+.horizontal-match-card {
+  width: 100%;
+  min-width: 0;
+  scroll-snap-align: start;
+}
+
+.empty-matches-card {
+  min-height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #e2e8f0;
+  font-weight: 800;
+  text-align: center;
+  background:
+    linear-gradient(145deg, rgba(30, 8, 10, 0.96), rgba(8, 28, 15, 0.68));
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 22px;
+  padding: 22px;
+}
+
+/* Su telefono le card sono larghe quasi tutto lo schermo */
+@media (max-width: 760px) {
+  #partite.card-section {
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+
+  .matches-row-header {
+    align-items: flex-start;
+  }
+
+  .matches-row-header h3 {
+    font-size: 0.95rem;
+  }
+
+  .matches-row-header p {
+    font-size: 0.88rem;
+  }
+
+  .horizontal-matches-scroll {
+    grid-auto-columns: 88%;
+    gap: 12px;
+    margin-left: -2px;
+    margin-right: -2px;
+  }
+
+  .horizontal-match-card .compact-teams {
+    grid-template-columns: 1fr;
+  }
+
+  .horizontal-match-card .compact-teams span,
+  .horizontal-match-card .compact-teams span:last-child {
+    text-align: left;
+  }
+}
+
+/* Su desktop si vedono più card affiancate, ma resta scrollabile */
+@media (min-width: 900px) {
+  .horizontal-matches-scroll {
+    grid-auto-columns: minmax(310px, 32%);
+  }
+}
+/* REGOLE MINIGAME + SCOREBOARD DETTAGLI */
+
+#quiz-timer-text,
+#quiz-streak-text {
+  color: #ffffff;
+}
+
+.minigame-rules {
+  position: relative;
+  z-index: 2;
+}
+
+.minigame-rules h3 {
+  font-family: "Orbitron", sans-serif;
+  color: #ffffff;
+  font-size: 1rem;
+  text-transform: uppercase;
+  text-align: center;
+  margin-bottom: 18px;
+}
+
+.minigame-rule-row {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 12px;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.10);
+}
+
+.minigame-rule-row:last-of-type {
+  border-bottom: none;
+}
+
+.minigame-rule-row span {
+  font-family: "Orbitron", sans-serif;
+  color: #120508;
+  background: linear-gradient(135deg, #ffffff, #facc15, #22c55e);
+  min-width: 48px;
+  text-align: center;
+  padding: 7px 9px;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 900;
+}
+
+.minigame-rule-row p {
+  color: #e2e8f0;
+  font-weight: 800;
+  line-height: 1.35;
+}
+
+.minigame-note {
+  margin-top: 16px;
+  color: #cbd5e1;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 16px;
+  padding: 14px;
+  font-weight: 700;
+  line-height: 1.45;
+}
+
+.scoreboard-row {
+  grid-template-columns: auto 1fr auto;
+}
+
+.scoreboard-player-info {
+  min-width: 0;
+}
+
+.scoreboard-name {
+  display: block;
+}
+
+.scoreboard-details {
+  display: block;
+  color: #cbd5e1;
+  font-size: 0.78rem;
+  font-weight: 700;
+  margin-top: 3px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.scoreboard-score {
+  white-space: nowrap;
+}
+
+@media (max-width: 760px) {
+  .quiz-progress {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .quiz-progress span {
+    font-size: 0.58rem;
+  }
+
+  .minigame-rule-row {
+    align-items: flex-start;
+  }
+}
