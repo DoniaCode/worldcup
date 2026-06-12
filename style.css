@@ -29,21 +29,21 @@ body {
   background:
     linear-gradient(
       90deg,
-      rgba(18, 5, 8, 0.98) 0%,
-      rgba(18, 5, 8, 0.94) 30%,
-      rgba(18, 5, 8, 0.62) 55%,
-      rgba(18, 5, 8, 0.40) 76%,
-      rgba(18, 5, 8, 0.80) 100%
+      rgba(18, 5, 8, 0.76) 0%,
+      rgba(18, 5, 8, 0.56) 24%,
+      rgba(18, 5, 8, 0.26) 45%,
+      rgba(18, 5, 8, 0.06) 68%,
+      rgba(18, 5, 8, 0.14) 100%
     ),
     linear-gradient(
       180deg,
-      rgba(18, 5, 8, 0.25) 0%,
-      rgba(18, 5, 8, 0.10) 55%,
-      rgba(18, 5, 8, 0.98) 100%
+      rgba(18, 5, 8, 0.04) 0%,
+      rgba(18, 5, 8, 0.06) 56%,
+      rgba(18, 5, 8, 0.72) 100%
     ),
     url("assets/legends.png");
   background-size: cover;
-  background-position: center right;
+  background-position: 68% center;
   background-repeat: no-repeat;
 }
 
@@ -52,8 +52,8 @@ body {
   position: absolute;
   inset: 0;
   background-image:
-    linear-gradient(rgba(255, 255, 255, 0.045) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.045) 1px, transparent 1px);
+    linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
   background-size: 54px 54px;
   mask-image: linear-gradient(to bottom, black 8%, transparent 88%);
   pointer-events: none;
@@ -69,17 +69,17 @@ body {
   top: 14%;
   border-radius: 50%;
   background:
-    radial-gradient(circle, rgba(255, 255, 255, 0.08), transparent 58%),
+    radial-gradient(circle, rgba(250, 204, 21, 0.10), transparent 58%),
     conic-gradient(
       from 140deg,
       transparent,
-      rgba(239, 68, 68, 0.26),
-      rgba(250, 204, 21, 0.22),
-      rgba(34, 197, 94, 0.22),
+      rgba(239, 68, 68, 0.10),
+      rgba(250, 204, 21, 0.10),
+      rgba(34, 197, 94, 0.10),
       transparent
     );
   filter: blur(1px);
-  opacity: 0.45;
+  opacity: 0.20;
   animation: pulseGlow 5s infinite alternate;
   z-index: 1;
 }
@@ -87,12 +87,12 @@ body {
 @keyframes pulseGlow {
   from {
     transform: scale(0.96) rotate(0deg);
-    opacity: 0.35;
+    opacity: 0.14;
   }
 
   to {
     transform: scale(1.04) rotate(8deg);
-    opacity: 0.6;
+    opacity: 0.28;
   }
 }
 
@@ -106,7 +106,7 @@ body {
   align-items: center;
   padding: 18px 22px;
   border: 1px solid rgba(255, 255, 255, 0.18);
-  background: rgba(18, 5, 8, 0.72);
+  background: rgba(18, 5, 8, 0.66);
   backdrop-filter: blur(20px);
   border-radius: 20px;
   box-shadow:
@@ -160,7 +160,7 @@ body {
 }
 
 .hero-content {
-  max-width: 760px;
+  max-width: 700px;
 }
 
 .small-title {
@@ -181,18 +181,18 @@ body {
   margin-bottom: 30px;
   color: #ffffff;
   text-shadow:
-    0 0 18px rgba(239, 68, 68, 0.28),
-    0 0 38px rgba(250, 204, 21, 0.20),
-    0 2px 18px rgba(0, 0, 0, 0.65);
+    0 0 18px rgba(239, 68, 68, 0.22),
+    0 0 38px rgba(250, 204, 21, 0.16),
+    0 4px 22px rgba(0, 0, 0, 0.75);
 }
 
 .hero-description {
-  max-width: 690px;
+  max-width: 620px;
   color: #f8fafc;
   font-size: 1.13rem;
   line-height: 1.8;
   margin-bottom: 38px;
-  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.75);
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.65);
 }
 
 .hero-actions {
@@ -228,9 +228,9 @@ body {
 
 .secondary-button {
   color: #ffffff;
-  border: 1px solid rgba(255, 255, 255, 0.35);
-  background: rgba(18, 5, 8, 0.62);
-  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.30);
+  background: rgba(18, 5, 8, 0.40);
+  backdrop-filter: blur(12px);
 }
 
 .hero-button:hover {
@@ -467,18 +467,23 @@ footer {
     background:
       linear-gradient(
         90deg,
-        rgba(18, 5, 8, 0.98) 0%,
-        rgba(18, 5, 8, 0.90) 45%,
-        rgba(18, 5, 8, 0.68) 100%
+        rgba(18, 5, 8, 0.70) 0%,
+        rgba(18, 5, 8, 0.44) 42%,
+        rgba(18, 5, 8, 0.20) 100%
       ),
       linear-gradient(
         180deg,
-        rgba(18, 5, 8, 0.25) 0%,
-        rgba(18, 5, 8, 0.98) 100%
+        rgba(18, 5, 8, 0.04) 0%,
+        rgba(18, 5, 8, 0.74) 100%
       ),
       url("assets/legends.png");
     background-size: cover;
     background-position: center;
+    background-repeat: no-repeat;
+  }
+
+  .hero-content {
+    max-width: 620px;
   }
 }
 
