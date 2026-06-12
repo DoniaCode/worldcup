@@ -1,3 +1,14 @@
+function normalizeTeamName(name) {
+  return name
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[’']/g, "")
+    .replace(/\./g, "")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
 function getMatchResult(homeScore, awayScore) {
   if (homeScore > awayScore) {
     return "HOME";
@@ -29,6 +40,83 @@ function calculatePoints(predHomeScore, predAwayScore, realHomeScore, realAwaySc
   }
 
   return points;
+}
+
+async function loadWorldCupData() {
+  try {
+    const response = await fetch("data/worldcup.json?v=" + Date.now());
+
+    if (!response.ok) {
+      console.warn("Impossibile leggere data/worldcup.json");
+      return null;
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.warn("Errore nel caricamento dei dati Mondiali:", error);
+    return null;
+  }
+}
+
+function updateScoresFromWorldCupData(worldCupData) {
+  if (!worldCupData || !worldCupData.matches) {
+    return;
+  }
+
+  for (const localMatch of scores) {
+    const localHome = normalizeTeamName(localMatch.apiHomeTeam);
+    const localAway = normalizeTeamName(localMatch.apiAwayTeam);
+
+    const apiMatch = worldCupData.matches.find(match => {
+      const apiTeam1 = normalizeTeamName(match.team1);
+      const apiTeam2 = normalizeTeamName(match.team2);
+
+      const sameOrder =
+        apiTeam1 === localHome &&
+        apiTeam2 === localAway;
+
+      const reverseOrder =
+        apiTeam1 === localAway &&
+        apiTeam2 === localHome;
+
+      return sameOrder || reverseOrder;
+    });
+
+    if (!apiMatch || !apiMatch.score || !Array.isArray(apiMatch.score.ft)) {
+      continue;
+    }
+
+    const apiHomeScore = apiMatch.score.ft[0];
+    const apiAwayScore = apiMatch.score.ft[1];
+
+    if (typeof apiHomeScore !== "number" || typeof apiAwayScore !== "number") {
+      continue;
+    }
+
+    const apiTeam1 = normalizeTeamName(apiMatch.team1);
+    const apiTeam2 = normalizeTeamName(apiMatch.team2);
+
+    const sameOrder =
+      apiTeam1 === localHome &&
+      apiTeam2 === localAway;
+
+    const reverseOrder =
+      apiTeam1 === localAway &&
+      apiTeam2 === localHome;
+
+    if (sameOrder) {
+      localMatch.realHomeScore = apiHomeScore;
+      localMatch.realAwayScore = apiAwayScore;
+      localMatch.finished = true;
+    }
+
+    if (reverseOrder) {
+      localMatch.realHomeScore = apiAwayScore;
+      localMatch.realAwayScore = apiHomeScore;
+      localMatch.finished = true;
+    }
+  }
 }
 
 function calculateLeaderboard() {
@@ -174,5 +262,18 @@ function displayMatches() {
   }
 }
 
-displayLeaderboard();
-displayMatches();
+async function initApp() {
+  displayLeaderboard();
+  displayMatches();
+
+  const worldCupData = await loadWorldCupData();
+
+  if (worldCupData) {
+    updateScoresFromWorldCupData(worldCupData);
+  }
+
+  displayLeaderboard();
+  displayMatches();
+}
+
+initApp();
