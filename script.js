@@ -1,5 +1,5 @@
 function normalizeTeamName(name) {
-  return name
+  return String(name)
     .toLowerCase()
     .normalize("NFD")
     .replace(/[\u0300-\u036f]/g, "")
@@ -44,25 +44,36 @@ function calculatePoints(predHomeScore, predAwayScore, realHomeScore, realAwaySc
 
 async function loadWorldCupData() {
   try {
+    console.log("Caricamento data/worldcup.json...");
+
     const response = await fetch("data/worldcup.json?v=" + Date.now());
 
+    console.log("Risposta fetch:", response.status, response.statusText);
+
     if (!response.ok) {
-      console.warn("Impossibile leggere data/worldcup.json");
+      console.error("Impossibile leggere data/worldcup.json");
       return null;
     }
 
     const data = await response.json();
+
+    console.log("Dati Mondiali caricati:", data);
+    console.log("Numero partite nel JSON:", data.matches ? data.matches.length : 0);
+
     return data;
   } catch (error) {
-    console.warn("Errore nel caricamento dei dati Mondiali:", error);
+    console.error("Errore nel caricamento dei dati Mondiali:", error);
     return null;
   }
 }
 
 function updateScoresFromWorldCupData(worldCupData) {
   if (!worldCupData || !worldCupData.matches) {
+    console.warn("Nessun dato valido trovato in worldCupData");
     return;
   }
+
+  let updatedMatches = 0;
 
   for (const localMatch of scores) {
     const localHome = normalizeTeamName(localMatch.apiHomeTeam);
@@ -83,14 +94,23 @@ function updateScoresFromWorldCupData(worldCupData) {
       return sameOrder || reverseOrder;
     });
 
-    if (!apiMatch || !apiMatch.score || !Array.isArray(apiMatch.score.ft)) {
+    if (!apiMatch) {
+      console.warn("Partita non trovata nel JSON:", localMatch.apiHomeTeam, "-", localMatch.apiAwayTeam);
       continue;
     }
 
-    const apiHomeScore = apiMatch.score.ft[0];
-    const apiAwayScore = apiMatch.score.ft[1];
+    console.log("Partita trovata:", localMatch.apiHomeTeam, "-", localMatch.apiAwayTeam, apiMatch);
 
-    if (typeof apiHomeScore !== "number" || typeof apiAwayScore !== "number") {
+    if (!apiMatch.score || !Array.isArray(apiMatch.score.ft)) {
+      console.warn("Partita trovata ma senza risultato finale:", apiMatch);
+      continue;
+    }
+
+    const apiScore1 = apiMatch.score.ft[0];
+    const apiScore2 = apiMatch.score.ft[1];
+
+    if (typeof apiScore1 !== "number" || typeof apiScore2 !== "number") {
+      console.warn("Risultato non numerico:", apiMatch.score.ft);
       continue;
     }
 
@@ -106,17 +126,21 @@ function updateScoresFromWorldCupData(worldCupData) {
       apiTeam2 === localHome;
 
     if (sameOrder) {
-      localMatch.realHomeScore = apiHomeScore;
-      localMatch.realAwayScore = apiAwayScore;
+      localMatch.realHomeScore = apiScore1;
+      localMatch.realAwayScore = apiScore2;
       localMatch.finished = true;
+      updatedMatches++;
     }
 
     if (reverseOrder) {
-      localMatch.realHomeScore = apiAwayScore;
-      localMatch.realAwayScore = apiHomeScore;
+      localMatch.realHomeScore = apiScore2;
+      localMatch.realAwayScore = apiScore1;
       localMatch.finished = true;
+      updatedMatches++;
     }
   }
+
+  console.log("Partite aggiornate automaticamente:", updatedMatches);
 }
 
 function calculateLeaderboard() {
