@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Future Cup League</title>
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+  <header class="hero">
+    <nav class="navbar">
+      <div class="logo">
+        FANTA<span>//</span>MONDIALI
+      </div>
+
+      <div class="nav-links">
+        <a href="#classifica">Classifica</a>
+        <a href="#partite">Partite</a>
+        <a href="#regole">Regole</a>
+      </div>
+    </nav>
+
+    <div class="hero-decor">
+      <span class="hud-circle circle-1"></span>
+      <span class="hud-circle circle-2"></span>
+      <span class="hud-line line-1"></span>
+      <span class="hud-line line-2"></span>
+      <span class="hud-line line-3"></span>
+      <span class="hud-dot dot-1"></span>
+      <span class="hud-dot dot-2"></span>
+      <span class="hud-dot dot-3"></span>
+    </div>
+
+    <section class="hero-content">
+      <p class="small-title">Competizione pronostici Mondiali</p>
+
+      <h1>
+        Predici.<br />
+        Calcola.<br />
+        Domina.
+      </h1>
+
+      <p class="hero-description">
+        Una piattaforma futuristica per seguire i pronostici dei tuoi amici,
+        calcolare i punti automaticamente e scoprire chi guida la classifica.
+      </p>
+
+      <div class="hero-actions">
+        <a href="#classifica" class="hero-button primary-button">Vedi classifica</a>
+        <a href="#regole" class="hero-button secondary-button">Come funziona</a>
+      </div>
+    </section>
+  </header>
+
+  <main>
+    <section id="classifica" class="card-section">
+      <div class="section-header">
+        <p class="small-title">Leaderboard</p>
+        <h2>Classifica generale</h2>
+        <p>
+          I punteggi vengono calcolati in base ai pronostici corretti sulle partite.
+        </p>
+      </div>
+
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Posizione</th>
+              <th>Giocatore</th>
+              <th>Punti</th>
+            </tr>
+          </thead>
+
+          <tbody id="leaderboard-body">
+            <tr>
+              <td>#1</td>
+              <td>In attesa dei dati</td>
+              <td>0</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="partite" class="card-section">
+      <div class="section-header">
+        <p class="small-title">Match center</p>
+        <h2>Partite e pronostici</h2>
+        <p>
+          Qui compariranno le partite, i risultati reali e i pronostici dei giocatori.
+        </p>
+      </div>
+
+      <div id="matches-container" class="matches-grid">
+        <article class="match-card placeholder-card">
+          <div class="match-status">In preparazione</div>
+
+          <div class="teams">
+            <span>Squadra A</span>
+            <strong>VS</strong>
+            <span>Squadra B</span>
+          </div>
+
+          <p>
+            Le card delle partite verranno generate automaticamente con JavaScript.
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <section id="regole" class="card-section">
+      <div class="section-header">
+        <p class="small-title">Sistema punti</p>
+        <h2>Regole della competizione</h2>
+      </div>
+
+      <div class="rules-grid">
+        <article class="rule-card">
+          <span class="rule-points">+1</span>
+          <h3>Vincitore corretto</h3>
+          <p>
+            Ottieni un punto se indovini la squadra vincente oppure se prevedi
+            correttamente un pareggio.
+          </p>
+        </article>
+
+        <article class="rule-card">
+          <span class="rule-points">+1</span>
+          <h3>Gol squadra di casa</h3>
+          <p>
+            Ottieni un punto se indovini esattamente il numero di gol segnati
+            dalla squadra di casa.
+          </p>
+        </article>
+
+        <article class="rule-card">
+          <span class="rule-points">+1</span>
+          <h3>Gol squadra ospite</h3>
+          <p>
+            Ottieni un punto se indovini esattamente il numero di gol segnati
+            dalla squadra ospite.
+          </p>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>Future Cup League — competizione Mondiali tra amici 🏆</p>
+  </footer>
+
+  <script src="predictions.js"></script>
+  <script src="scores.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
