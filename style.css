@@ -867,3 +867,140 @@ footer {
     width: fit-content;
   }
 }
+/* ACCORDION PARTITE */
+
+.match-accordion {
+  padding: 0;
+}
+
+.match-accordion summary {
+  list-style: none;
+  cursor: pointer;
+}
+
+.match-accordion summary::-webkit-details-marker {
+  display: none;
+}
+
+.match-summary {
+  position: relative;
+  z-index: 2;
+  padding: 22px;
+}
+
+.match-summary-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  margin-bottom: 18px;
+}
+
+.open-details {
+  font-family: "Orbitron", sans-serif;
+  font-size: 0.62rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  color: #facc15;
+  border: 1px solid rgba(250, 204, 21, 0.35);
+  padding: 7px 10px;
+  border-radius: 999px;
+  background: rgba(250, 204, 21, 0.08);
+}
+
+.compact-teams {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 14px;
+}
+
+.compact-teams span {
+  font-family: "Orbitron", sans-serif;
+  font-size: 0.88rem;
+  font-weight: 900;
+  color: #ffffff;
+  text-transform: uppercase;
+}
+
+.compact-teams span:last-child {
+  text-align: right;
+}
+
+.compact-teams strong {
+  font-family: "Orbitron", sans-serif;
+  color: #120508;
+  background: linear-gradient(135deg, #ffffff, #facc15, #22c55e);
+  padding: 8px 12px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  white-space: nowrap;
+}
+
+.match-details {
+  position: relative;
+  z-index: 2;
+  padding: 0 22px 22px;
+}
+
+.match-accordion[open] .open-details {
+  color: #120508;
+  background: linear-gradient(135deg, #ffffff, #facc15, #22c55e);
+}
+
+.match-accordion[open] {
+  border-color: rgba(250, 204, 21, 0.48);
+}
+
+/* MOBILE: LISTA MOLTO PIÙ COMPATTA */
+
+@media (max-width: 760px) {
+  .matches-grid {
+    gap: 12px;
+  }
+
+  .match-summary {
+    padding: 16px;
+  }
+
+  .match-summary-top {
+    margin-bottom: 12px;
+  }
+
+  .match-status {
+    margin-bottom: 0;
+    font-size: 0.56rem;
+    padding: 7px 10px;
+  }
+
+  .open-details {
+    font-size: 0.55rem;
+    padding: 6px 9px;
+  }
+
+  .compact-teams {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .compact-teams span,
+  .compact-teams span:last-child {
+    text-align: left;
+    font-size: 0.82rem;
+  }
+
+  .compact-teams strong {
+    width: fit-content;
+    font-size: 0.72rem;
+    padding: 7px 11px;
+  }
+
+  .match-details {
+    padding: 0 16px 16px;
+  }
+
+  .real-score {
+    margin-top: 0;
+  }
+}

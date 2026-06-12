@@ -44,36 +44,25 @@ function calculatePoints(predHomeScore, predAwayScore, realHomeScore, realAwaySc
 
 async function loadWorldCupData() {
   try {
-    console.log("Caricamento data/worldcup.json...");
-
     const response = await fetch("data/worldcup.json?v=" + Date.now());
 
-    console.log("Risposta fetch:", response.status, response.statusText);
-
     if (!response.ok) {
-      console.error("Impossibile leggere data/worldcup.json");
+      console.warn("Impossibile leggere data/worldcup.json");
       return null;
     }
 
     const data = await response.json();
-
-    console.log("Dati Mondiali caricati:", data);
-    console.log("Numero partite nel JSON:", data.matches ? data.matches.length : 0);
-
     return data;
   } catch (error) {
-    console.error("Errore nel caricamento dei dati Mondiali:", error);
+    console.warn("Errore nel caricamento dei dati Mondiali:", error);
     return null;
   }
 }
 
 function updateScoresFromWorldCupData(worldCupData) {
   if (!worldCupData || !worldCupData.matches) {
-    console.warn("Nessun dato valido trovato in worldCupData");
     return;
   }
-
-  let updatedMatches = 0;
 
   for (const localMatch of scores) {
     const localHome = normalizeTeamName(localMatch.apiHomeTeam);
@@ -94,15 +83,7 @@ function updateScoresFromWorldCupData(worldCupData) {
       return sameOrder || reverseOrder;
     });
 
-    if (!apiMatch) {
-      console.warn("Partita non trovata nel JSON:", localMatch.apiHomeTeam, "-", localMatch.apiAwayTeam);
-      continue;
-    }
-
-    console.log("Partita trovata:", localMatch.apiHomeTeam, "-", localMatch.apiAwayTeam, apiMatch);
-
-    if (!apiMatch.score || !Array.isArray(apiMatch.score.ft)) {
-      console.warn("Partita trovata ma senza risultato finale:", apiMatch);
+    if (!apiMatch || !apiMatch.score || !Array.isArray(apiMatch.score.ft)) {
       continue;
     }
 
@@ -110,7 +91,6 @@ function updateScoresFromWorldCupData(worldCupData) {
     const apiScore2 = apiMatch.score.ft[1];
 
     if (typeof apiScore1 !== "number" || typeof apiScore2 !== "number") {
-      console.warn("Risultato non numerico:", apiMatch.score.ft);
       continue;
     }
 
@@ -129,18 +109,14 @@ function updateScoresFromWorldCupData(worldCupData) {
       localMatch.realHomeScore = apiScore1;
       localMatch.realAwayScore = apiScore2;
       localMatch.finished = true;
-      updatedMatches++;
     }
 
     if (reverseOrder) {
       localMatch.realHomeScore = apiScore2;
       localMatch.realAwayScore = apiScore1;
       localMatch.finished = true;
-      updatedMatches++;
     }
   }
-
-  console.log("Partite aggiornate automaticamente:", updatedMatches);
 }
 
 function calculateLeaderboard() {
@@ -218,7 +194,7 @@ function getMatchStatusText(match) {
 
 function getRealScoreText(match) {
   if (!match.finished) {
-    return "-";
+    return "VS";
   }
 
   return `${match.realHomeScore} - ${match.realAwayScore}`;
@@ -234,8 +210,8 @@ function displayMatches() {
       return prediction.matchId === match.id;
     });
 
-    const matchCard = document.createElement("article");
-    matchCard.className = "match-card";
+    const matchCard = document.createElement("details");
+    matchCard.className = "match-card match-accordion";
 
     const predictionsHTML = matchPredictions.map(prediction => {
       let pointsText = "";
@@ -263,22 +239,29 @@ function displayMatches() {
     }).join("");
 
     matchCard.innerHTML = `
-      <div class="match-status">${getMatchStatusText(match)}</div>
+      <summary class="match-summary">
+        <div class="match-summary-top">
+          <span class="match-status">${getMatchStatusText(match)}</span>
+          <span class="open-details">Tocca</span>
+        </div>
 
-      <div class="teams">
-        <span>${match.homeTeam}</span>
-        <strong>VS</strong>
-        <span>${match.awayTeam}</span>
-      </div>
+        <div class="compact-teams">
+          <span>${match.homeTeam}</span>
+          <strong>${getRealScoreText(match)}</strong>
+          <span>${match.awayTeam}</span>
+        </div>
+      </summary>
 
-      <div class="real-score">
-        <span>Risultato reale</span>
-        <strong>${getRealScoreText(match)}</strong>
-      </div>
+      <div class="match-details">
+        <div class="real-score">
+          <span>Risultato reale</span>
+          <strong>${match.finished ? `${match.realHomeScore} - ${match.realAwayScore}` : "-"}</strong>
+        </div>
 
-      <div class="predictions-list">
-        <h4>Pronostici</h4>
-        ${predictionsHTML}
+        <div class="predictions-list">
+          <h4>Pronostici</h4>
+          ${predictionsHTML}
+        </div>
       </div>
     `;
 
