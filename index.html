@@ -93,46 +93,106 @@
 <section id="minigiochi" class="card-section">
   <div class="section-header">
     <p class="small-title">Fun zone</p>
-    <h2>Minigiochi</h2>
+    <h2>Quiz bandiere</h2>
+
     <p>
-      Quiz rapido sulle bandiere mondiali. Inserisci il tuo nome, gioca e salva il tuo miglior punteggio nella classifica globale.
+      Hai 3 vite e 12 secondi per riconoscere ogni bandiera.
+      Rispondi velocemente, crea una combo e supera il record.
     </p>
   </div>
 
   <div class="games-grid">
-    <article class="game-card">
-      <div class="game-label">Quiz bandiere</div>
+    <article class="game-card flag-game-card">
+      <div class="game-label">Flag challenge</div>
 
       <div id="flag-quiz" class="flag-quiz">
         <div class="player-selector">
-        <p class="player-name-label">Scegli giocatore</p>
+          <p class="player-name-label">Scegli giocatore</p>
 
-        <div class="player-buttons">
-            <button class="player-choice-button" data-player="Donia">Donia</button>
-            <button class="player-choice-button" data-player="Alessia">Alessia</button>
-            <button class="player-choice-button" data-player="Hiba">Hiba</button>
+          <div class="player-buttons">
+            <button
+              type="button"
+              class="player-choice-button"
+              data-player="Donia"
+            >
+              Donia
+            </button>
+
+            <button
+              type="button"
+              class="player-choice-button"
+              data-player="Alessia"
+            >
+              Alessia
+            </button>
+
+            <button
+              type="button"
+              class="player-choice-button"
+              data-player="Hiba"
+            >
+              Hiba
+            </button>
+          </div>
         </div>
-     </div>
 
-        <div class="quiz-progress">
-        <span id="quiz-player-display">Giocatore: nessuno</span>
-        <span id="quiz-progress-text">Domanda 0/10</span>
+        <div class="quiz-mini-rules">
+          <span>❤️ 3 vite</span>
+          <span>⏱️ 12 secondi</span>
+          <span>⚡ Combo</span>
         </div>
 
-        <div id="flag-emoji" class="flag-emoji">🏳️</div>
+        <div class="quiz-hud">
+          <div class="quiz-hud-top">
+            <span id="quiz-player-display">Nessun giocatore</span>
+            <span id="quiz-progress-text">0/10</span>
+          </div>
 
-        <h3>Che paese è?</h3>
+          <div class="quiz-hud-stats">
+            <span id="quiz-lives-text">❤️❤️❤️</span>
+            <span id="quiz-streak-text">Combo ×1</span>
+            <span id="quiz-timer-text">12.0s</span>
+          </div>
+        </div>
+
+        <div class="quiz-timer-track">
+          <div id="quiz-timer-bar" class="quiz-timer-bar"></div>
+        </div>
+
+        <div class="flag-stage">
+          <div id="flag-emoji" class="flag-emoji">🌍</div>
+        </div>
+
+        <h3 id="flag-question-title">Scegli un giocatore</h3>
 
         <div id="flag-options" class="flag-options"></div>
 
-        <p id="quiz-feedback" class="quiz-feedback"></p>
+        <p id="quiz-feedback" class="quiz-feedback">
+          10 bandiere · 3 vite · 12 secondi
+        </p>
 
         <div class="quiz-footer">
-          <span id="quiz-score">Punteggio: 0</span>
-          <button id="next-flag-button" class="quiz-button">Prossima</button>
+          <div class="quiz-score-box">
+            <span>Punteggio</span>
+            <strong id="quiz-score">0 pt</strong>
+          </div>
+
+          <button
+            id="start-flag-button"
+            type="button"
+            class="quiz-button"
+            disabled
+          >
+            Inizia partita
+          </button>
         </div>
 
-        <button id="save-score-button" class="save-score-button">
+        <button
+          id="save-score-button"
+          type="button"
+          class="save-score-button"
+          disabled
+        >
           Salva miglior punteggio
         </button>
 
@@ -147,13 +207,14 @@
         <h3>Classifica quiz</h3>
 
         <div id="flag-scoreboard-list" class="scoreboard-list">
-          <p class="scoreboard-empty">Caricamento classifica...</p>
+          <p class="scoreboard-empty">
+            Caricamento classifica...
+          </p>
         </div>
       </div>
     </article>
   </div>
 </section>
-
     <section id="partite" class="card-section">
       <div class="section-header">
         <p class="small-title">Match center</p>
@@ -227,6 +288,7 @@
 <script src="firebase-config.js"></script>
 <script src="scores.js"></script>
 <script src="predictions.js"></script>
-<script src="script.js"></script>
+<script src="script.js?v=4"></script>
 </body>
 </html>
+

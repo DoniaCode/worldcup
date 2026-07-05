@@ -1905,3 +1905,430 @@ footer {
     padding: 6px 9px;
   }
 }
+
+/* =========================================================
+   FLAG QUIZ V2 - MOBILE FIRST
+   ========================================================= */
+
+#minigiochi.card-section {
+  padding-left: 14px;
+  padding-right: 14px;
+  overflow: hidden;
+}
+
+#minigiochi .games-grid {
+  display: grid;
+  grid-template-columns: 1fr !important;
+  gap: 16px;
+}
+
+#minigiochi .game-card {
+  padding: 16px;
+  border-radius: 22px;
+}
+
+.flag-game-card {
+  overflow: visible;
+}
+
+#minigiochi .player-selector {
+  margin-bottom: 14px;
+}
+
+#minigiochi .player-name-label {
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+#minigiochi .player-buttons {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: 8px;
+}
+
+#minigiochi .player-choice-button {
+  min-width: 0;
+  min-height: 48px;
+  padding: 10px 5px;
+  border-radius: 14px;
+  font-size: 0.67rem;
+  letter-spacing: 0.4px;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+#minigiochi .player-choice-button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.quiz-mini-rules {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 7px;
+  margin-bottom: 14px;
+}
+
+.quiz-mini-rules span {
+  min-width: 0;
+  padding: 9px 4px;
+  border-radius: 13px;
+  color: #e2e8f0;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  text-align: center;
+  font-family: "Orbitron", sans-serif;
+  font-size: 0.53rem;
+  font-weight: 800;
+  line-height: 1.3;
+}
+
+.quiz-hud {
+  padding: 12px;
+  border-radius: 17px;
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.09),
+      rgba(255, 255, 255, 0.04)
+    );
+  border: 1px solid rgba(255, 255, 255, 0.14);
+}
+
+.quiz-hud-top,
+.quiz-hud-stats {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.quiz-hud-top {
+  margin-bottom: 10px;
+}
+
+.quiz-hud-top span {
+  font-family: "Orbitron", sans-serif;
+  font-size: 0.68rem;
+  font-weight: 900;
+  color: #ffffff;
+  text-transform: uppercase;
+}
+
+#quiz-progress-text {
+  color: #facc15;
+}
+
+.quiz-hud-stats span {
+  font-family: "Orbitron", sans-serif;
+  font-size: 0.61rem;
+  font-weight: 900;
+  color: #e2e8f0;
+  white-space: nowrap;
+}
+
+#quiz-lives-text {
+  font-size: 0.78rem;
+  letter-spacing: 1px;
+}
+
+#quiz-streak-text {
+  color: #facc15;
+}
+
+#quiz-timer-text {
+  min-width: 48px;
+  text-align: right;
+}
+
+.quiz-timer-track {
+  width: 100%;
+  height: 9px;
+  margin: 10px 0 16px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.quiz-timer-bar {
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  background:
+    linear-gradient(
+      90deg,
+      #22c55e,
+      #facc15
+    );
+  transition: width 0.08s linear;
+}
+
+.quiz-timer-bar.danger {
+  background:
+    linear-gradient(
+      90deg,
+      #facc15,
+      #ef4444
+    );
+  animation: timerDangerPulse 0.45s infinite alternate;
+}
+
+.flag-stage {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 150px;
+  margin-bottom: 12px;
+  overflow: hidden;
+  border-radius: 24px;
+  background:
+    radial-gradient(
+      circle at center,
+      rgba(250, 204, 21, 0.12),
+      transparent 65%
+    ),
+    rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+#minigiochi .flag-emoji {
+  margin: 0;
+  font-size: clamp(5rem, 25vw, 7rem);
+  line-height: 1;
+  user-select: none;
+}
+
+.flag-pop {
+  animation: flagPop 0.4s ease;
+}
+
+#flag-question-title {
+  margin-bottom: 14px;
+  text-align: center;
+  font-family: "Orbitron", sans-serif;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+}
+
+#minigiochi .flag-options {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+#minigiochi .flag-option {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  min-height: 62px;
+  padding: 10px 8px;
+  border-radius: 16px;
+  font-size: 0.94rem;
+  line-height: 1.15;
+  text-align: center;
+  overflow-wrap: anywhere;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+#minigiochi .flag-option:not(:disabled):active {
+  transform: scale(0.96);
+}
+
+#minigiochi .flag-option.correct {
+  color: #120508;
+  border-color: transparent;
+  background:
+    linear-gradient(
+      135deg,
+      #ffffff,
+      #facc15,
+      #22c55e
+    );
+  animation: correctAnswerPulse 0.45s ease;
+}
+
+#minigiochi .flag-option.wrong {
+  color: #ffffff;
+  background: rgba(239, 68, 68, 0.35);
+  border-color: rgba(239, 68, 68, 0.8);
+  animation: wrongAnswerShake 0.35s ease;
+}
+
+#minigiochi .flag-option:disabled {
+  cursor: default;
+}
+
+#minigiochi .quiz-feedback {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  margin-bottom: 12px;
+  padding: 8px;
+  border-radius: 14px;
+  font-size: 0.95rem;
+  line-height: 1.25;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+#minigiochi .quiz-footer {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.quiz-score-box {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 13px 15px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.quiz-score-box span {
+  font-family: "Orbitron", sans-serif;
+  color: #e2e8f0;
+  font-size: 0.61rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.quiz-score-box strong {
+  font-family: "Orbitron", sans-serif;
+  color: #facc15;
+  font-size: 1rem;
+}
+
+#start-flag-button,
+#save-score-button {
+  min-height: 52px;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+#start-flag-button[hidden] {
+  display: none;
+}
+
+#start-flag-button:disabled,
+#save-score-button:disabled {
+  opacity: 0.45;
+}
+
+#minigiochi .scoreboard-card {
+  margin-top: 0;
+}
+
+.quiz-confetti {
+  position: absolute;
+  top: 50%;
+  z-index: 5;
+  pointer-events: none;
+  font-size: 1rem;
+  animation: quizConfettiFall 1s ease-out forwards;
+  animation-delay: var(--confetti-delay);
+}
+
+@keyframes flagPop {
+  0% {
+    transform: scale(0.7);
+    opacity: 0;
+  }
+
+  65% {
+    transform: scale(1.12);
+    opacity: 1;
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes correctAnswerPulse {
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.04);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes wrongAnswerShake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+
+  25% {
+    transform: translateX(-5px);
+  }
+
+  75% {
+    transform: translateX(5px);
+  }
+}
+
+@keyframes timerDangerPulse {
+  from {
+    opacity: 0.65;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes quizConfettiFall {
+  0% {
+    transform:
+      translateY(-20px)
+      translateX(0)
+      rotate(0deg)
+      scale(0.7);
+    opacity: 0;
+  }
+
+  20% {
+    opacity: 1;
+  }
+
+  100% {
+    transform:
+      translateY(105px)
+      translateX(var(--confetti-drift))
+      rotate(var(--confetti-rotation))
+      scale(1.1);
+    opacity: 0;
+  }
+}
+
+@media (max-width: 360px) {
+  #minigiochi .flag-options {
+    grid-template-columns: 1fr !important;
+  }
+
+  #minigiochi .flag-option {
+    min-height: 54px;
+  }
+
+  .quiz-hud-stats span {
+    font-size: 0.55rem;
+  }
+
+  #quiz-lives-text {
+    font-size: 0.7rem;
+  }
+}
