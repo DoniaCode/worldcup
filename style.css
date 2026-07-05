@@ -1705,3 +1705,203 @@ footer {
     grid-auto-columns: minmax(310px, 32%);
   }
 }
+/* FIX MOBILE DEFINITIVO - PARTITE A SCORRIMENTO ORIZZONTALE */
+
+#matches-container {
+  display: grid !important;
+  grid-template-columns: 1fr !important;
+  gap: 34px !important;
+  width: 100%;
+  overflow: visible;
+}
+
+.matches-row-section {
+  width: 100%;
+  min-width: 0;
+}
+
+.matches-row-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 14px;
+  margin-bottom: 16px;
+}
+
+.matches-row-header h3 {
+  font-family: "Orbitron", sans-serif;
+  color: #ffffff;
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 4px;
+}
+
+.matches-row-header p {
+  color: #cbd5e1;
+  font-size: 0.92rem;
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+.matches-row-header span {
+  flex-shrink: 0;
+  font-family: "Orbitron", sans-serif;
+  color: #120508;
+  background: linear-gradient(135deg, #ffffff, #facc15, #22c55e);
+  padding: 8px 12px;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 900;
+}
+
+.horizontal-matches-scroll {
+  display: grid !important;
+  grid-auto-flow: column !important;
+  grid-auto-columns: minmax(280px, 86%) !important;
+  grid-template-columns: none !important;
+  gap: 14px;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  padding: 2px 4px 18px;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+}
+
+.horizontal-match-card {
+  width: 100%;
+  min-width: 0;
+  scroll-snap-align: start;
+}
+
+.horizontal-match-card .match-summary {
+  padding: 22px;
+}
+
+.horizontal-match-card .compact-teams {
+  display: grid !important;
+  grid-template-columns: 1fr auto 1fr !important;
+  align-items: center;
+  gap: 12px;
+}
+
+.horizontal-match-card .compact-teams span {
+  font-size: 0.78rem;
+  line-height: 1.15;
+}
+
+.horizontal-match-card .compact-teams span:last-child {
+  text-align: right;
+}
+
+.horizontal-match-card .compact-teams strong {
+  font-size: 0.7rem;
+  padding: 7px 11px;
+}
+
+.empty-matches-card {
+  min-height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #e2e8f0;
+  font-weight: 800;
+  text-align: center;
+  background:
+    linear-gradient(145deg, rgba(30, 8, 10, 0.96), rgba(8, 28, 15, 0.68));
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 22px;
+  padding: 22px;
+}
+
+/* TELEFONO */
+
+@media (max-width: 760px) {
+  #partite.card-section {
+    width: 100%;
+    padding-left: 16px;
+    padding-right: 16px;
+    overflow: hidden;
+  }
+
+  #matches-container {
+    gap: 30px !important;
+  }
+
+  .matches-row-header {
+    align-items: flex-start;
+    margin-bottom: 12px;
+  }
+
+  .matches-row-header h3 {
+    font-size: 0.92rem;
+  }
+
+  .matches-row-header p {
+    font-size: 0.82rem;
+  }
+
+  .matches-row-header span {
+    font-size: 0.68rem;
+    padding: 7px 10px;
+  }
+
+  .horizontal-matches-scroll {
+    grid-auto-columns: 88% !important;
+    gap: 12px;
+    padding-bottom: 16px;
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .horizontal-match-card {
+    border-radius: 22px;
+  }
+
+  .horizontal-match-card .match-summary {
+    padding: 18px;
+  }
+
+  .horizontal-match-card .match-summary-top {
+    margin-bottom: 18px;
+  }
+
+  .horizontal-match-card .compact-teams {
+    grid-template-columns: 1fr auto 1fr !important;
+    gap: 10px;
+  }
+
+  .horizontal-match-card .compact-teams span {
+    font-size: 0.72rem;
+    word-break: normal;
+    overflow-wrap: anywhere;
+  }
+
+  .horizontal-match-card .compact-teams strong {
+    font-size: 0.66rem;
+    padding: 7px 10px;
+  }
+
+  .horizontal-match-card .match-details {
+    padding-left: 18px;
+    padding-right: 18px;
+    padding-bottom: 18px;
+  }
+}
+
+/* TELEFONI PICCOLI */
+
+@media (max-width: 420px) {
+  .horizontal-matches-scroll {
+    grid-auto-columns: 91% !important;
+  }
+
+  .horizontal-match-card .compact-teams span {
+    font-size: 0.68rem;
+  }
+
+  .horizontal-match-card .compact-teams strong {
+    font-size: 0.62rem;
+    padding: 6px 9px;
+  }
+}

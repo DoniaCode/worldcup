@@ -1,244 +1,890 @@
+function createMatch(
+  id,
+  homeTeam,
+  awayTeam,
+  apiHomeTeam,
+  apiAwayTeam,
+  date
+) {
+  return {
+    id,
+    homeTeam,
+    awayTeam,
+    apiHomeTeam,
+    apiAwayTeam,
+    date,
+    apiFixtureId: null,
+    realHomeScore: null,
+    realAwayScore: null,
+    finished: false
+  };
+}
+
 const scores = [
-  {
-    id: "messico-sudafrica",
-    homeTeam: "Messico",
-    awayTeam: "Sudafrica",
-    apiHomeTeam: "Mexico",
-    apiAwayTeam: "South Africa",
-    apiFixtureId: null,
-    realHomeScore: null,
-    realAwayScore: null,
-    finished: false
-  },
-  {
-    id: "corea-del-sud-cechia",
-    homeTeam: "Corea del Sud",
-    awayTeam: "Cechia",
-    apiHomeTeam: "South Korea",
-    apiAwayTeam: "Czech Republic",
-    apiFixtureId: null,
-    realHomeScore: null,
-    realAwayScore: null,
-    finished: false
-  },
-  {
-    id: "canada-bosnia-ed-erzegovina",
-    homeTeam: "Canada",
-    awayTeam: "Bosnia ed Erzegovina",
-    apiHomeTeam: "Canada",
-    apiAwayTeam: "Bosnia and Herzegovina",
-    apiFixtureId: null,
-    realHomeScore: null,
-    realAwayScore: null,
-    finished: false
-  },
-  {
-    id: "svizzera-qatar",
-    homeTeam: "Svizzera",
-    awayTeam: "Qatar",
-    apiHomeTeam: "Switzerland",
-    apiAwayTeam: "Qatar",
-    apiFixtureId: null,
-    realHomeScore: null,
-    realAwayScore: null,
-    finished: false
-  },
-  {
-    id: "stati-uniti-paraguay",
-    homeTeam: "Stati Uniti",
-    awayTeam: "Paraguay",
-    apiHomeTeam: "United States",
-    apiAwayTeam: "Paraguay",
-    apiFixtureId: null,
-    realHomeScore: null,
-    realAwayScore: null,
-    finished: false
-  },
-  {
-    id: "brasile-marocco",
-    homeTeam: "Brasile",
-    awayTeam: "Marocco",
-    apiHomeTeam: "Brazil",
-    apiAwayTeam: "Morocco",
-    apiFixtureId: null,
-    realHomeScore: null,
-    realAwayScore: null,
-    finished: false
-  },
-  {
-    id: "haiti-scozia",
-    homeTeam: "Haiti",
-    awayTeam: "Scozia",
-    apiHomeTeam: "Haiti",
-    apiAwayTeam: "Scotland",
-    apiFixtureId: null,
-    realHomeScore: null,
-    realAwayScore: null,
-    finished: false
-  },
-  {
-    id: "australia-turchia",
-    homeTeam: "Australia",
-    awayTeam: "Turchia",
-    apiHomeTeam: "Australia",
-    apiAwayTeam: "Turkey",
-    apiFixtureId: null,
-    realHomeScore: null,
-    realAwayScore: null,
-    finished: false
-  },
-  {
-    id: "germania-curacao",
-    homeTeam: "Germania",
-    awayTeam: "Curaçao",
-    apiHomeTeam: "Germany",
-    apiAwayTeam: "Curacao",
-    apiFixtureId: null,
-    realHomeScore: null,
-    realAwayScore: null,
-    finished: false
-  },
-  {
-    id: "paesi-bassi-giappone",
-    homeTeam: "Paesi Bassi",
-    awayTeam: "Giappone",
-    apiHomeTeam: "Netherlands",
-    apiAwayTeam: "Japan",
-    apiFixtureId: null,
-    realHomeScore: null,
-    realAwayScore: null,
-    finished: false
-  },
-  {
-    id: "costa-davorio-ecuador",
-    homeTeam: "Costa d’Avorio",
-    awayTeam: "Ecuador",
-    apiHomeTeam: "Ivory Coast",
-    apiAwayTeam: "Ecuador",
-    apiFixtureId: null,
-    realHomeScore: null,
-    realAwayScore: null,
-    finished: false
-  },
-  {
-    id: "svezia-tunisia",
-    homeTeam: "Svezia",
-    awayTeam: "Tunisia",
-    apiHomeTeam: "Sweden",
-    apiAwayTeam: "Tunisia",
-    apiFixtureId: null,
-    realHomeScore: null,
-    realAwayScore: null,
-    finished: false
-  },
-  {
-    id: "belgio-egitto",
-    homeTeam: "Belgio",
-    awayTeam: "Egitto",
-    apiHomeTeam: "Belgium",
-    apiAwayTeam: "Egypt",
-    apiFixtureId: null,
-    realHomeScore: null,
-    realAwayScore: null,
-    finished: false
-  },
-  {
-    id: "spagna-capo-verde",
-    homeTeam: "Spagna",
-    awayTeam: "Capo Verde",
-    apiHomeTeam: "Spain",
-    apiAwayTeam: "Cape Verde",
-    apiFixtureId: null,
-    realHomeScore: null,
-    realAwayScore: null,
-    finished: false
-  },
-  {
-    id: "iran-nuova-zelanda",
-    homeTeam: "Iran",
-    awayTeam: "Nuova Zelanda",
-    apiHomeTeam: "Iran",
-    apiAwayTeam: "New Zealand",
-    apiFixtureId: null,
-    realHomeScore: null,
-    realAwayScore: null,
-    finished: false
-  },
-  {
-    id: "arabia-saudita-uruguay",
-    homeTeam: "Arabia Saudita",
-    awayTeam: "Uruguay",
-    apiHomeTeam: "Saudi Arabia",
-    apiAwayTeam: "Uruguay",
-    apiFixtureId: null,
-    realHomeScore: null,
-    realAwayScore: null,
-    finished: false
-  },
-  {
-    id: "francia-senegal",
-    homeTeam: "Francia",
-    awayTeam: "Senegal",
-    apiHomeTeam: "France",
-    apiAwayTeam: "Senegal",
-    apiFixtureId: null,
-    realHomeScore: null,
-    realAwayScore: null,
-    finished: false
-  },
-  {
-    id: "iraq-norvegia",
-    homeTeam: "Iraq",
-    awayTeam: "Norvegia",
-    apiHomeTeam: "Iraq",
-    apiAwayTeam: "Norway",
-    apiFixtureId: null,
-    realHomeScore: null,
-    realAwayScore: null,
-    finished: false
-  },
-  {
-    id: "argentina-algeria",
-    homeTeam: "Argentina",
-    awayTeam: "Algeria",
-    apiHomeTeam: "Argentina",
-    apiAwayTeam: "Algeria",
-    apiFixtureId: null,
-    realHomeScore: null,
-    realAwayScore: null,
-    finished: false
-  },
-  {
-    id: "austria-giordania",
-    homeTeam: "Austria",
-    awayTeam: "Giordania",
-    apiHomeTeam: "Austria",
-    apiAwayTeam: "Jordan",
-    apiFixtureId: null,
-    realHomeScore: null,
-    realAwayScore: null,
-    finished: false
-  },
-  {
-    id: "portogallo-congo",
-    homeTeam: "Portogallo",
-    awayTeam: "RD Congo",
-    apiHomeTeam: "Portugal",
-    apiAwayTeam: "Congo DR",
-    apiFixtureId: null,
-    realHomeScore: null,
-    realAwayScore: null,
-    finished: false
-  },
-  {
-    id: "inghilterra-croazia",
-    homeTeam: "Inghilterra",
-    awayTeam: "Croazia",
-    apiHomeTeam: "England",
-    apiAwayTeam: "Croatia",
-    apiFixtureId: null,
-    realHomeScore: null,
-    realAwayScore: null,
-    finished: false
-  }
+  /*
+  |--------------------------------------------------------------------------
+  | GRUPPO A
+  |--------------------------------------------------------------------------
+  */
+
+  createMatch(
+    "messico-sudafrica",
+    "Messico",
+    "Sudafrica",
+    "Mexico",
+    "South Africa",
+    "2026-06-11"
+  ),
+
+  createMatch(
+    "corea-del-sud-cechia",
+    "Corea del Sud",
+    "Repubblica Ceca",
+    "South Korea",
+    "Czech Republic",
+    "2026-06-11"
+  ),
+
+  createMatch(
+    "repubblica-ceca-sudafrica",
+    "Repubblica Ceca",
+    "Sudafrica",
+    "Czech Republic",
+    "South Africa",
+    "2026-06-18"
+  ),
+
+  createMatch(
+    "messico-corea-del-sud",
+    "Messico",
+    "Corea del Sud",
+    "Mexico",
+    "South Korea",
+    "2026-06-18"
+  ),
+
+  createMatch(
+    "repubblica-ceca-messico",
+    "Repubblica Ceca",
+    "Messico",
+    "Czech Republic",
+    "Mexico",
+    "2026-06-24"
+  ),
+
+  createMatch(
+    "sudafrica-corea-del-sud",
+    "Sudafrica",
+    "Corea del Sud",
+    "South Africa",
+    "South Korea",
+    "2026-06-24"
+  ),
+
+  /*
+  |--------------------------------------------------------------------------
+  | GRUPPO B
+  |--------------------------------------------------------------------------
+  */
+
+  createMatch(
+    "canada-bosnia-ed-erzegovina",
+    "Canada",
+    "Bosnia ed Erzegovina",
+    "Canada",
+    "Bosnia & Herzegovina",
+    "2026-06-12"
+  ),
+
+  createMatch(
+    "svizzera-qatar",
+    "Svizzera",
+    "Qatar",
+    "Switzerland",
+    "Qatar",
+    "2026-06-13"
+  ),
+
+  createMatch(
+    "svizzera-bosnia-ed-erzegovina",
+    "Svizzera",
+    "Bosnia ed Erzegovina",
+    "Switzerland",
+    "Bosnia & Herzegovina",
+    "2026-06-18"
+  ),
+
+  createMatch(
+    "canada-qatar",
+    "Canada",
+    "Qatar",
+    "Canada",
+    "Qatar",
+    "2026-06-18"
+  ),
+
+  createMatch(
+    "svizzera-canada",
+    "Svizzera",
+    "Canada",
+    "Switzerland",
+    "Canada",
+    "2026-06-24"
+  ),
+
+  createMatch(
+    "bosnia-ed-erzegovina-qatar",
+    "Bosnia ed Erzegovina",
+    "Qatar",
+    "Bosnia & Herzegovina",
+    "Qatar",
+    "2026-06-24"
+  ),
+
+  /*
+  |--------------------------------------------------------------------------
+  | GRUPPO C
+  |--------------------------------------------------------------------------
+  */
+
+  createMatch(
+    "brasile-marocco",
+    "Brasile",
+    "Marocco",
+    "Brazil",
+    "Morocco",
+    "2026-06-13"
+  ),
+
+  createMatch(
+    "haiti-scozia",
+    "Haiti",
+    "Scozia",
+    "Haiti",
+    "Scotland",
+    "2026-06-13"
+  ),
+
+  createMatch(
+    "scozia-marocco",
+    "Scozia",
+    "Marocco",
+    "Scotland",
+    "Morocco",
+    "2026-06-19"
+  ),
+
+  createMatch(
+    "brasile-haiti",
+    "Brasile",
+    "Haiti",
+    "Brazil",
+    "Haiti",
+    "2026-06-19"
+  ),
+
+  createMatch(
+    "scozia-brasile",
+    "Scozia",
+    "Brasile",
+    "Scotland",
+    "Brazil",
+    "2026-06-24"
+  ),
+
+  createMatch(
+    "marocco-haiti",
+    "Marocco",
+    "Haiti",
+    "Morocco",
+    "Haiti",
+    "2026-06-24"
+  ),
+
+  /*
+  |--------------------------------------------------------------------------
+  | GRUPPO D
+  |--------------------------------------------------------------------------
+  */
+
+  createMatch(
+    "stati-uniti-paraguay",
+    "Stati Uniti",
+    "Paraguay",
+    "USA",
+    "Paraguay",
+    "2026-06-12"
+  ),
+
+  createMatch(
+    "australia-turchia",
+    "Australia",
+    "Turchia",
+    "Australia",
+    "Turkey",
+    "2026-06-13"
+  ),
+
+  createMatch(
+    "stati-uniti-australia",
+    "Stati Uniti",
+    "Australia",
+    "USA",
+    "Australia",
+    "2026-06-19"
+  ),
+
+  createMatch(
+    "turchia-paraguay",
+    "Turchia",
+    "Paraguay",
+    "Turkey",
+    "Paraguay",
+    "2026-06-19"
+  ),
+
+  createMatch(
+    "turchia-stati-uniti",
+    "Turchia",
+    "Stati Uniti",
+    "Turkey",
+    "USA",
+    "2026-06-25"
+  ),
+
+  createMatch(
+    "paraguay-australia",
+    "Paraguay",
+    "Australia",
+    "Paraguay",
+    "Australia",
+    "2026-06-25"
+  ),
+
+  /*
+  |--------------------------------------------------------------------------
+  | GRUPPO E
+  |--------------------------------------------------------------------------
+  */
+
+  createMatch(
+    "germania-curacao",
+    "Germania",
+    "Curaçao",
+    "Germany",
+    "Curaçao",
+    "2026-06-14"
+  ),
+
+  createMatch(
+    "costa-davorio-ecuador",
+    "Costa d’Avorio",
+    "Ecuador",
+    "Ivory Coast",
+    "Ecuador",
+    "2026-06-14"
+  ),
+
+  createMatch(
+    "germania-costa-davorio",
+    "Germania",
+    "Costa d’Avorio",
+    "Germany",
+    "Ivory Coast",
+    "2026-06-20"
+  ),
+
+  createMatch(
+    "ecuador-curacao",
+    "Ecuador",
+    "Curaçao",
+    "Ecuador",
+    "Curaçao",
+    "2026-06-20"
+  ),
+
+  createMatch(
+    "curacao-costa-davorio",
+    "Curaçao",
+    "Costa d’Avorio",
+    "Curaçao",
+    "Ivory Coast",
+    "2026-06-25"
+  ),
+
+  createMatch(
+    "ecuador-germania",
+    "Ecuador",
+    "Germania",
+    "Ecuador",
+    "Germany",
+    "2026-06-25"
+  ),
+
+  /*
+  |--------------------------------------------------------------------------
+  | GRUPPO F
+  |--------------------------------------------------------------------------
+  */
+
+  createMatch(
+    "paesi-bassi-giappone",
+    "Paesi Bassi",
+    "Giappone",
+    "Netherlands",
+    "Japan",
+    "2026-06-14"
+  ),
+
+  createMatch(
+    "svezia-tunisia",
+    "Svezia",
+    "Tunisia",
+    "Sweden",
+    "Tunisia",
+    "2026-06-14"
+  ),
+
+  createMatch(
+    "paesi-bassi-svezia",
+    "Paesi Bassi",
+    "Svezia",
+    "Netherlands",
+    "Sweden",
+    "2026-06-20"
+  ),
+
+  createMatch(
+    "tunisia-giappone",
+    "Tunisia",
+    "Giappone",
+    "Tunisia",
+    "Japan",
+    "2026-06-20"
+  ),
+
+  createMatch(
+    "giappone-svezia",
+    "Giappone",
+    "Svezia",
+    "Japan",
+    "Sweden",
+    "2026-06-25"
+  ),
+
+  createMatch(
+    "tunisia-paesi-bassi",
+    "Tunisia",
+    "Paesi Bassi",
+    "Tunisia",
+    "Netherlands",
+    "2026-06-25"
+  ),
+
+  /*
+  |--------------------------------------------------------------------------
+  | GRUPPO G
+  |--------------------------------------------------------------------------
+  */
+
+  createMatch(
+    "belgio-egitto",
+    "Belgio",
+    "Egitto",
+    "Belgium",
+    "Egypt",
+    "2026-06-15"
+  ),
+
+  createMatch(
+    "iran-nuova-zelanda",
+    "Iran",
+    "Nuova Zelanda",
+    "Iran",
+    "New Zealand",
+    "2026-06-15"
+  ),
+
+  createMatch(
+    "belgio-iran",
+    "Belgio",
+    "Iran",
+    "Belgium",
+    "Iran",
+    "2026-06-21"
+  ),
+
+  createMatch(
+    "nuova-zelanda-egitto",
+    "Nuova Zelanda",
+    "Egitto",
+    "New Zealand",
+    "Egypt",
+    "2026-06-21"
+  ),
+
+  createMatch(
+    "egitto-iran",
+    "Egitto",
+    "Iran",
+    "Egypt",
+    "Iran",
+    "2026-06-26"
+  ),
+
+  createMatch(
+    "nuova-zelanda-belgio",
+    "Nuova Zelanda",
+    "Belgio",
+    "New Zealand",
+    "Belgium",
+    "2026-06-26"
+  ),
+
+  /*
+  |--------------------------------------------------------------------------
+  | GRUPPO H
+  |--------------------------------------------------------------------------
+  */
+
+  createMatch(
+    "spagna-capo-verde",
+    "Spagna",
+    "Capo Verde",
+    "Spain",
+    "Cape Verde",
+    "2026-06-15"
+  ),
+
+  createMatch(
+    "arabia-saudita-uruguay",
+    "Arabia Saudita",
+    "Uruguay",
+    "Saudi Arabia",
+    "Uruguay",
+    "2026-06-15"
+  ),
+
+  createMatch(
+    "spagna-arabia-saudita",
+    "Spagna",
+    "Arabia Saudita",
+    "Spain",
+    "Saudi Arabia",
+    "2026-06-21"
+  ),
+
+  createMatch(
+    "uruguay-capo-verde",
+    "Uruguay",
+    "Capo Verde",
+    "Uruguay",
+    "Cape Verde",
+    "2026-06-21"
+  ),
+
+  createMatch(
+    "capo-verde-arabia-saudita",
+    "Capo Verde",
+    "Arabia Saudita",
+    "Cape Verde",
+    "Saudi Arabia",
+    "2026-06-26"
+  ),
+
+  createMatch(
+    "uruguay-spagna",
+    "Uruguay",
+    "Spagna",
+    "Uruguay",
+    "Spain",
+    "2026-06-26"
+  ),
+
+  /*
+  |--------------------------------------------------------------------------
+  | GRUPPO I
+  |--------------------------------------------------------------------------
+  */
+
+  createMatch(
+    "francia-senegal",
+    "Francia",
+    "Senegal",
+    "France",
+    "Senegal",
+    "2026-06-16"
+  ),
+
+  createMatch(
+    "iraq-norvegia",
+    "Iraq",
+    "Norvegia",
+    "Iraq",
+    "Norway",
+    "2026-06-16"
+  ),
+
+  createMatch(
+    "francia-iraq",
+    "Francia",
+    "Iraq",
+    "France",
+    "Iraq",
+    "2026-06-22"
+  ),
+
+  createMatch(
+    "norvegia-senegal",
+    "Norvegia",
+    "Senegal",
+    "Norway",
+    "Senegal",
+    "2026-06-22"
+  ),
+
+  createMatch(
+    "norvegia-francia",
+    "Norvegia",
+    "Francia",
+    "Norway",
+    "France",
+    "2026-06-26"
+  ),
+
+  createMatch(
+    "senegal-iraq",
+    "Senegal",
+    "Iraq",
+    "Senegal",
+    "Iraq",
+    "2026-06-26"
+  ),
+
+  /*
+  |--------------------------------------------------------------------------
+  | GRUPPO J
+  |--------------------------------------------------------------------------
+  */
+
+  createMatch(
+    "argentina-algeria",
+    "Argentina",
+    "Algeria",
+    "Argentina",
+    "Algeria",
+    "2026-06-16"
+  ),
+
+  createMatch(
+    "austria-giordania",
+    "Austria",
+    "Giordania",
+    "Austria",
+    "Jordan",
+    "2026-06-16"
+  ),
+
+  createMatch(
+    "argentina-austria",
+    "Argentina",
+    "Austria",
+    "Argentina",
+    "Austria",
+    "2026-06-22"
+  ),
+
+  createMatch(
+    "giordania-algeria",
+    "Giordania",
+    "Algeria",
+    "Jordan",
+    "Algeria",
+    "2026-06-22"
+  ),
+
+  createMatch(
+    "algeria-austria",
+    "Algeria",
+    "Austria",
+    "Algeria",
+    "Austria",
+    "2026-06-27"
+  ),
+
+  createMatch(
+    "giordania-argentina",
+    "Giordania",
+    "Argentina",
+    "Jordan",
+    "Argentina",
+    "2026-06-27"
+  ),
+
+  /*
+  |--------------------------------------------------------------------------
+  | GRUPPO K
+  |--------------------------------------------------------------------------
+  */
+
+  createMatch(
+    "portogallo-congo",
+    "Portogallo",
+    "RD Congo",
+    "Portugal",
+    "DR Congo",
+    "2026-06-17"
+  ),
+
+  createMatch(
+    "uzbekistan-colombia",
+    "Uzbekistan",
+    "Colombia",
+    "Uzbekistan",
+    "Colombia",
+    "2026-06-17"
+  ),
+
+  createMatch(
+    "portogallo-uzbekistan",
+    "Portogallo",
+    "Uzbekistan",
+    "Portugal",
+    "Uzbekistan",
+    "2026-06-23"
+  ),
+
+  createMatch(
+    "colombia-rd-congo",
+    "Colombia",
+    "RD Congo",
+    "Colombia",
+    "DR Congo",
+    "2026-06-23"
+  ),
+
+  createMatch(
+    "colombia-portogallo",
+    "Colombia",
+    "Portogallo",
+    "Colombia",
+    "Portugal",
+    "2026-06-27"
+  ),
+
+  createMatch(
+    "rd-congo-uzbekistan",
+    "RD Congo",
+    "Uzbekistan",
+    "DR Congo",
+    "Uzbekistan",
+    "2026-06-27"
+  ),
+
+  /*
+  |--------------------------------------------------------------------------
+  | GRUPPO L
+  |--------------------------------------------------------------------------
+  */
+
+  createMatch(
+    "inghilterra-croazia",
+    "Inghilterra",
+    "Croazia",
+    "England",
+    "Croatia",
+    "2026-06-17"
+  ),
+
+  createMatch(
+    "ghana-panama",
+    "Ghana",
+    "Panama",
+    "Ghana",
+    "Panama",
+    "2026-06-17"
+  ),
+
+  createMatch(
+    "inghilterra-ghana",
+    "Inghilterra",
+    "Ghana",
+    "England",
+    "Ghana",
+    "2026-06-23"
+  ),
+
+  createMatch(
+    "panama-croazia",
+    "Panama",
+    "Croazia",
+    "Panama",
+    "Croatia",
+    "2026-06-23"
+  ),
+
+  createMatch(
+    "panama-inghilterra",
+    "Panama",
+    "Inghilterra",
+    "Panama",
+    "England",
+    "2026-06-27"
+  ),
+
+  createMatch(
+    "croazia-ghana",
+    "Croazia",
+    "Ghana",
+    "Croatia",
+    "Ghana",
+    "2026-06-27"
+  ),
+
+  /*
+  |--------------------------------------------------------------------------
+  | PARTITE SUCCESSIVE
+  |--------------------------------------------------------------------------
+  */
+
+  // 29 giugno
+  createMatch(
+    "brasile-giappone",
+    "Brasile",
+    "Giappone",
+    "Brazil",
+    "Japan",
+    "2026-06-29"
+  ),
+
+  createMatch(
+    "germania-paraguay",
+    "Germania",
+    "Paraguay",
+    "Germany",
+    "Paraguay",
+    "2026-06-29"
+  ),
+
+  // 30 giugno
+  createMatch(
+    "paesi-bassi-marocco",
+    "Paesi Bassi",
+    "Marocco",
+    "Netherlands",
+    "Morocco",
+    "2026-06-30"
+  ),
+
+  createMatch(
+    "costa-davorio-norvegia",
+    "Costa d’Avorio",
+    "Norvegia",
+    "Ivory Coast",
+    "Norway",
+    "2026-06-30"
+  ),
+
+  createMatch(
+    "francia-svezia",
+    "Francia",
+    "Svezia",
+    "France",
+    "Sweden",
+    "2026-06-30"
+  ),
+
+  // 1 luglio
+  createMatch(
+    "messico-ecuador",
+    "Messico",
+    "Ecuador",
+    "Mexico",
+    "Ecuador",
+    "2026-07-01"
+  ),
+
+  createMatch(
+    "inghilterra-rd-congo",
+    "Inghilterra",
+    "RD Congo",
+    "England",
+    "DR Congo",
+    "2026-07-01"
+  ),
+
+  createMatch(
+    "belgio-senegal",
+    "Belgio",
+    "Senegal",
+    "Belgium",
+    "Senegal",
+    "2026-07-01"
+  ),
+
+  // 2 luglio
+  createMatch(
+    "stati-uniti-bosnia-ed-erzegovina",
+    "Stati Uniti",
+    "Bosnia ed Erzegovina",
+    "USA",
+    "Bosnia & Herzegovina",
+    "2026-07-02"
+  ),
+
+  createMatch(
+    "spagna-austria",
+    "Spagna",
+    "Austria",
+    "Spain",
+    "Austria",
+    "2026-07-02"
+  ),
+
+  // 3 luglio
+  createMatch(
+    "portogallo-croazia",
+    "Portogallo",
+    "Croazia",
+    "Portugal",
+    "Croatia",
+    "2026-07-03"
+  ),
+
+  createMatch(
+    "svizzera-algeria",
+    "Svizzera",
+    "Algeria",
+    "Switzerland",
+    "Algeria",
+    "2026-07-03"
+  ),
+
+  createMatch(
+    "australia-egitto",
+    "Australia",
+    "Egitto",
+    "Australia",
+    "Egypt",
+    "2026-07-03"
+  ),
+
+  // 4 luglio
+  createMatch(
+    "argentina-capo-verde",
+    "Argentina",
+    "Capo Verde",
+    "Argentina",
+    "Cape Verde",
+    "2026-07-04"
+  ),
+
+  createMatch(
+    "colombia-ghana",
+    "Colombia",
+    "Ghana",
+    "Colombia",
+    "Ghana",
+    "2026-07-04"
+  )
 ];
