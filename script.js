@@ -210,106 +210,103 @@ function displayMatches() {
   matchesContainer.innerHTML = "";
 
   const finishedMatches = scores.filter(match => match.finished);
-  const upcomingMatches = scores.filter(match => !match.finished);
 
-  const matchSections = [
-    {
-      title: "Terminate",
-      subtitle: "Partite concluse con punti già calcolati",
-      matches: finishedMatches
-    },
-    {
-      title: "Da giocare",
-      subtitle: "Partite ancora senza risultato ufficiale",
-      matches: upcomingMatches
-    }
-  ];
+  const sectionElement = document.createElement("div");
+  sectionElement.className = "matches-row-section";
 
-  matchSections.forEach(section => {
-    const sectionElement = document.createElement("div");
-    sectionElement.className = "matches-row-section";
+  const cardsHTML = finishedMatches.map(match => {
+    const matchPredictions = predictions.filter(prediction => {
+      return prediction.matchId === match.id;
+    });
 
-    const cardsHTML = section.matches.map(match => {
-      const matchPredictions = predictions.filter(prediction => {
-        return prediction.matchId === match.id;
-      });
-
-      const predictionsHTML = matchPredictions.map(prediction => {
-        let pointsText = "";
-
-        if (match.finished) {
-          const points = calculatePoints(
-            prediction.predHomeScore,
-            prediction.predAwayScore,
-            match.realHomeScore,
-            match.realAwayScore
-          );
-
-          pointsText = `<span class="prediction-points">${points} pt</span>`;
-        } else {
-          pointsText = `<span class="prediction-points pending">in attesa</span>`;
-        }
-
-        return `
-          <div class="prediction-row">
-            <span class="prediction-player">${prediction.player}</span>
-            <span class="prediction-score">${prediction.predHomeScore} - ${prediction.predAwayScore}</span>
-            ${pointsText}
-          </div>
-        `;
-      }).join("");
+    const predictionsHTML = matchPredictions.map(prediction => {
+      const points = calculatePoints(
+        prediction.predHomeScore,
+        prediction.predAwayScore,
+        match.realHomeScore,
+        match.realAwayScore
+      );
 
       return `
-        <details class="match-card match-accordion horizontal-match-card">
-          <summary class="match-summary">
-            <div class="match-summary-top">
-              <span class="match-status">${getMatchStatusText(match)}</span>
-              <span class="open-details">Apri</span>
-            </div>
+        <div class="prediction-row">
+          <span class="prediction-player">${prediction.player}</span>
 
-            <div class="compact-teams">
-              <span>${match.homeTeam}</span>
-              <strong>${getRealScoreText(match)}</strong>
-              <span>${match.awayTeam}</span>
-            </div>
-          </summary>
+          <span class="prediction-score">
+            ${prediction.predHomeScore} - ${prediction.predAwayScore}
+          </span>
 
-          <div class="match-details">
-            <div class="real-score">
-              <span>Risultato reale</span>
-              <strong>${match.finished ? `${match.realHomeScore} - ${match.realAwayScore}` : "-"}</strong>
-            </div>
-
-            <div class="predictions-list">
-              <h4>Pronostici</h4>
-              ${predictionsHTML}
-            </div>
-          </div>
-        </details>
+          <span class="prediction-points">
+            ${points} pt
+          </span>
+        </div>
       `;
     }).join("");
 
-    sectionElement.innerHTML = `
-      <div class="matches-row-header">
-        <div>
-          <h3>${section.title}</h3>
-          <p>${section.subtitle}</p>
+    return `
+      <details class="match-card match-accordion horizontal-match-card">
+        <summary class="match-summary">
+          <div class="match-summary-top">
+            <span class="match-status">Terminata</span>
+            <span class="open-details">Apri</span>
+          </div>
+
+          <div class="compact-teams">
+            <span>${match.homeTeam}</span>
+
+            <strong>
+              ${match.realHomeScore} - ${match.realAwayScore}
+            </strong>
+
+            <span>${match.awayTeam}</span>
+          </div>
+        </summary>
+
+        <div class="match-details">
+          <div class="real-score">
+            <span>Risultato reale</span>
+
+            <strong>
+              ${match.realHomeScore} - ${match.realAwayScore}
+            </strong>
+          </div>
+
+          <div class="predictions-list">
+            <h4>Pronostici</h4>
+
+            ${
+              predictionsHTML ||
+              `<p>Nessun pronostico disponibile.</p>`
+            }
+          </div>
         </div>
-
-        <span>${section.matches.length}</span>
-      </div>
-
-      <div class="horizontal-matches-scroll">
-        ${
-          section.matches.length > 0
-            ? cardsHTML
-            : `<article class="empty-matches-card">Nessuna partita in questa sezione.</article>`
-        }
-      </div>
+      </details>
     `;
+  }).join("");
 
-    matchesContainer.appendChild(sectionElement);
-  });
+  sectionElement.innerHTML = `
+    <div class="matches-row-header">
+      <div>
+        <h3>Partite terminate</h3>
+        <p>Risultati conclusi con punti già calcolati</p>
+      </div>
+
+      <span>${finishedMatches.length}</span>
+    </div>
+
+    <div class="horizontal-matches-scroll">
+      ${
+        finishedMatches.length > 0
+          ? cardsHTML
+          : `
+            <article class="empty-matches-card">
+              Nessuna partita terminata disponibile.
+            </article>
+          `
+      }
+    </div>
+  `;
+
+  matchesContainer.appendChild(sectionElement);
 }
 async function initApp() {
   displayLeaderboard();
