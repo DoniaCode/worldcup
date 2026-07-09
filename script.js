@@ -361,6 +361,7 @@ function displayTop5() {
   container.innerHTML = "";
 
   if (typeof futurePredictions === 'undefined') {
+    console.error("Errore: futurePredictions non trovato. Controlla predictions.js");
     return;
   }
 
@@ -413,6 +414,7 @@ function displayTop5() {
     `;
   }
 }
+
 async function initApp() {
   displayLeaderboard();
   displayMatches();
@@ -428,6 +430,7 @@ async function initApp() {
   displayMatches();
   displayTop5();
 }
+
 initApp();
 function countryCodeToFlagEmoji(countryCode) {
   return countryCode
