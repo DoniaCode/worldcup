@@ -42,7 +42,6 @@ function calculatePoints(predHomeScore, predAwayScore, realHomeScore, realAwaySc
   return points;
 }
 
-let worldCupDataCache = null;
 
 let worldCupDataCache = null;
 
