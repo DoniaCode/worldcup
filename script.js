@@ -395,6 +395,19 @@ let totalAnswerTime = 0;
 let answeredQuestions = 0;
 
 let quizTimerFrame = null;
+const correctAnswerSound = new Audio("./assets/siuum.mp3");
+
+correctAnswerSound.preload = "auto";
+correctAnswerSound.volume = 0.9;
+
+function playSiuumSound() {
+  correctAnswerSound.pause();
+  correctAnswerSound.currentTime = 0;
+
+  correctAnswerSound.play().catch(error => {
+    console.warn("Errore audio SIUUUM:", error);
+  });
+}
 let quizNextTimeout = null;
 let quizAudioContext = null;
 
@@ -1166,10 +1179,11 @@ function checkFlagAnswer(
       quizFeedback.className =
         "quiz-feedback good";
     }
+    
 
     createQuizConfetti();
-    playQuizTone("correct");
-    vibrateQuiz(35);
+    playSiuumSound();
+    vibrateQuiz([25, 40, 25]);
   } else {
     remainingLives -= 1;
     currentStreak = 0;
