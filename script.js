@@ -42,15 +42,14 @@ function calculatePoints(predHomeScore, predAwayScore, realHomeScore, realAwaySc
   return points;
 }
 
-
 let worldCupDataCache = null;
 
 async function loadWorldCupData() {
   try {
-    const response = await fetch("worldcup.json?v=" + Date.now());
+    const response = await fetch("data/worldcup.json?v=" + Date.now()); //[cite: 5]
 
     if (!response.ok) {
-      console.warn("Impossibile leggere worldcup.json");
+      console.warn("Impossibile leggere data/worldcup.json"); //[cite: 5]
       return null;
     }
 
@@ -58,7 +57,7 @@ async function loadWorldCupData() {
     worldCupDataCache = data;
     return data;
   } catch (error) {
-    console.warn("Errore nel caricamento dei dati Mondiali:", error);
+    console.warn("Errore nel caricamento dei dati Mondiali:", error); //[cite: 5]
     return null;
   }
 }
