@@ -44,16 +44,19 @@ function calculatePoints(predHomeScore, predAwayScore, realHomeScore, realAwaySc
 
 let worldCupDataCache = null;
 
+let worldCupDataCache = null;
+
 async function loadWorldCupData() {
   try {
-    const response = await fetch("data/worldcup.json?v=" + Date.now());
+    const response = await fetch("worldcup.json?v=" + Date.now());
 
     if (!response.ok) {
-      console.warn("Impossibile leggere data/worldcup.json");
+      console.warn("Impossibile leggere worldcup.json");
       return null;
     }
 
     const data = await response.json();
+    worldCupDataCache = data;
     return data;
   } catch (error) {
     console.warn("Errore nel caricamento dei dati Mondiali:", error);
