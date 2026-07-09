@@ -42,6 +42,8 @@ function calculatePoints(predHomeScore, predAwayScore, realHomeScore, realAwaySc
   return points;
 }
 
+let worldCupDataCache = null;
+
 async function loadWorldCupData() {
   try {
     const response = await fetch("data/worldcup.json?v=" + Date.now());
@@ -57,6 +59,40 @@ async function loadWorldCupData() {
     console.warn("Errore nel caricamento dei dati Mondiali:", error);
     return null;
   }
+}
+function calculateKnockoutPoints(player, data) {
+  if (!data || !data.matches) return 0;
+  if (!futurePredictions[player]) return 0;
+
+  let points = 0;
+  const preds = futurePredictions[player];
+
+  const quarterFinalists = new Set();
+  const semiFinalists = new Set();
+  const finalists = new Set();
+
+  data.matches.forEach(match => {
+    if (match.round === "Quarter-final") {
+      quarterFinalists.add(match.team1);
+      quarterFinalists.add(match.team2);
+    }
+    if (match.round === "Semi-final") {
+      semiFinalists.add(match.team1);
+      semiFinalists.add(match.team2);
+    }
+    if (match.round === "Final") {
+      finalists.add(match.team1);
+      finalists.add(match.team2);
+    }
+  });
+
+  preds.top5.forEach(team => {
+    if (quarterFinalists.has(team)) points += 3;
+    if (semiFinalists.has(team)) points += 5;
+    if (finalists.has(team)) points += 8;
+  });
+
+  return points;
 }
 
 function updateScoresFromWorldCupData(worldCupData) {
@@ -141,6 +177,10 @@ function calculateLeaderboard() {
     );
 
     leaderboard[prediction.player] += points;
+  }
+
+  for (const player in leaderboard) {
+    leaderboard[player] += calculateKnockoutPoints(player, worldCupDataCache);
   }
 
   return Object.entries(leaderboard)
@@ -1611,3 +1651,4 @@ function initFlagQuiz() {
 
 initFirebaseScoreboard();
 initFlagQuiz();
+

@@ -387,3 +387,15 @@ const predictions = Object.entries(predictionData).flatMap(
       })
     )
 );
+
+const futurePredictions = {
+  Donia: {
+    top5: ["Australia", "France", "Spain", "Morocco", "Argentina"]
+  },
+  Alessia: {
+    top5: ["Argentina", "Canada", "France", "Senegal", "Australia"]
+  },
+  Hiba: {
+    top5: ["Morocco", "Spain", "Japan", "Brazil", "England"]
+  }
+};
