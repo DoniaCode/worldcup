@@ -348,9 +348,72 @@ function displayMatches() {
 
   matchesContainer.appendChild(sectionElement);
 }
+function displayTop5() {
+  const container = document.getElementById("top5-container");
+  
+  if (!container) {
+    return;
+  }
+
+  container.innerHTML = "";
+
+  if (typeof futurePredictions === 'undefined') {
+    return;
+  }
+
+  for (const [player, preds] of Object.entries(futurePredictions)) {
+    let totalPoints = 0;
+    
+    const teamsHTML = preds.top5.map(team => {
+      let teamPoints = 0;
+      
+      if (worldCupDataCache && worldCupDataCache.matches) {
+        worldCupDataCache.matches.forEach(match => {
+          if (match.round === "Quarter-final" && (match.team1 === team || match.team2 === team)) {
+            teamPoints += 3;
+          }
+          if (match.round === "Semi-final" && (match.team1 === team || match.team2 === team)) {
+            teamPoints += 5;
+          }
+          if (match.round === "Final" && (match.team1 === team || match.team2 === team)) {
+            teamPoints += 8;
+          }
+        });
+      }
+      
+      totalPoints += teamPoints;
+      
+      return `
+        <div class="prediction-row">
+          <span class="prediction-player">${team}</span>
+          <span class="prediction-points ${teamPoints === 0 ? 'pending' : ''}">
+            ${teamPoints} pt
+          </span>
+        </div>
+      `;
+    }).join("");
+
+    container.innerHTML += `
+      <article class="match-card">
+        <div class="match-status">${player}</div>
+
+        <div class="teams">
+          <span>Punti Bonus</span>
+          <strong>${totalPoints} pt</strong>
+        </div>
+
+        <div class="predictions-list">
+          <h4>Top 5 Scelta</h4>
+          ${teamsHTML}
+        </div>
+      </article>
+    `;
+  }
+}
 async function initApp() {
   displayLeaderboard();
   displayMatches();
+  displayTop5();
 
   const worldCupData = await loadWorldCupData();
 
@@ -360,8 +423,8 @@ async function initApp() {
 
   displayLeaderboard();
   displayMatches();
+  displayTop5();
 }
-
 initApp();
 function countryCodeToFlagEmoji(countryCode) {
   return countryCode
